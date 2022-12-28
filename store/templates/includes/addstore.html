@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Dashboard | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/storelist.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+
+
+<div class="add-store-container">
+
+
+    <div class="add-store-header">
+        <h1><i class="fa-solid fa-plus"></i>&nbsp;Add Store</h1>
+        <div class="add-store-options">
+            <a href="{% url 'store_list' %}">Back</a>
+        </div>
+    </div>
+    <div class="add-store-form">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="store-name">Store Name</label>
+                <input type="text" name="store-name" id="store-name" placeholder="Please input store name">
+            </div>
+            <div class="form-group">
+                <label for="store-address">Store Address</label>
+                <input type="text" name="store-address" id="store-address" placeholder="Please input store address">
+            </div>
+            <div class="form-group">
+                <label for="store-manager">Store Manager</label>
+                <input type="text" name="store-manager" id="store-manager" placeholder="Please input store manager">
+            </div>
+            <div class="form-group">
+                <label for="store-slug">Store Slug</label>
+                <input type="text" name="store-slug" id="store-slug" placeholder="Please input store slug">
+            </div>
+            <div class="form-group">
+                <p class="name">Store Image</p>
+                <input type="file" name="store-image" id="store-image" placeholder="Store Image" hidden>
+                <label class="no-image" for="store-image">
+                    <i class="fa-solid fa-plus"></i>
+                </label>
+                <label class="form-img-container" for="store-image">
+                    <img src="" id="myImg" name="myImg">
+                    <span id="form-img-close"> <i class="fa-solid fa-close"></i></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add">
+            </div>
+
+        </form>
+    </div>
+</div>
+<script>
+    document.getElementById('store-image').addEventListener('change',
+        function (event) {
+            // handle the file upload
+            const file = event.target.files[0];
+            const imgElement = document.getElementById('myImg');
+            imgElement.src = URL.createObjectURL(file);
+            console.log(imgElement.src);
+            var imgContainer = document.querySelector('.form-img-container');
+            imgContainer.style.display = "block";
+            var noImage = document.querySelector('.no-image');
+            noImage.style.display = "none";
+            var formImgClose = document.querySelector('#form-img-close');
+            formImgClose.addEventListener('click', function () {
+                imgContainer.style.display = 'none';
+                noImage.style.display = "flex";
+                imgElement.src = "";
+            })
+        });
+</script>
+<script>
+
+</script>
+
+{% endblock %}

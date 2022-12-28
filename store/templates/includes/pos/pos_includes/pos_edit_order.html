@@ -1,0 +1,70 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %} Add Product | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/product.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+
+
+<div class="add-product-container">
+    <div class="add-product-header">
+        <h1><i class="fa-solid fa-edit"></i>&nbsp;Edit Order</h1>
+        <div class="add-product-options">
+            <a href="{% url 'pos' store_slug=store.store_slug %}">Back</a>
+        </div>
+    </div>
+    <div class="add-product-form">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="order-qty">Order Quantity</label>
+                <input type="text" name="order-qty" id="order-qty" placeholder="{{order.order_item_quantity}}">
+            </div>
+            <div class="form-group">
+                <label for="order-product">Order Product</label>
+                <input type="text" name="order-product" id="order-product" placeholder="{{order.order_item_product}}">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save Order">
+            </div>
+
+        </form>
+    </div>
+</div>
+<!-- <script>
+    document.getElementById('store-image').addEventListener('change',
+        function (event) {
+            // handle the file upload
+            const file = event.target.files[0];
+            const imgElement = document.getElementById('myImg');
+            imgElement.src = URL.createObjectURL(file);
+            console.log(imgElement.src);
+            var imgContainer = document.querySelector('.form-img-container');
+            imgContainer.style.display = "block";
+            var noImage = document.querySelector('.no-image');
+            noImage.style.display = "none";
+            var formImgClose = document.querySelector('#form-img-close');
+            formImgClose.addEventListener('click', function () {
+                imgContainer.style.display = 'none';
+                noImage.style.display = "flex";
+                imgElement.src = "";
+            })
+        });
+</script>
+<script>
+
+</script> -->
+
+{% endblock %}

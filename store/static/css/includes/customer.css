@@ -1,0 +1,10 @@
+.pos-customer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+    height: 100vh;
+    margin: 0 auto;
+    text-align: center;
+    color: gray;
+}

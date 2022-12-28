@@ -1,0 +1,102 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %} Add Product | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/product.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+
+
+<div class="add-product-container">
+    <div class="add-product-header">
+        <h1><i class="fa-solid fa-plus"></i>&nbsp;Update Product</h1>
+        <div class="add-product-options">
+            <a href="{% url 'pos_products' store_slug=store.store_slug %}">Back</a>
+        </div>
+    </div>
+    <div class="add-product-form">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="product-name">Product Name</label>
+                <input type="text" name="product-name" id="product-name" placeholder="{{product.product_name}}">
+            </div>
+            <div class="form-group">
+                <label for="product-slug">Product Slug</label>
+                <input type="text" name="product-slug" id="product-slug" placeholder="{{product.product_slug}}">
+            </div>
+            <div class="form-group">
+                <label for="product-description">Product Description</label>
+                <input type="text" name="product-description" id="product-description"
+                    placeholder="{{product.product_description}}">
+            </div>
+            <div class="form-group">
+                <label for="product-price">Product Price</label>
+                <input type="number" name="product-price" id="product-price" value=""
+                    placeholder="{{product.product_price}}">
+            </div>
+            <div class="form-group">
+                <label for="product-category">Product Category</label>
+                <select name="product-category" id="product-category">
+                    {% for ctg in category %}
+                    <option value="{{ctg.id}}">{{ctg.category_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="product-store">Product Store</label>
+                <input type="text" name="product-store" id="product-store" value="{{store.store_name}}" readonly>
+            </div>
+            <div class="form-group">
+                <p class="name">Product Image</p>
+                <input type="file" name="product-image" id="product-image" placeholder="Store Image" hidden>
+                <label class="no-image" for="product-image">
+                    <i class="fa-solid fa-plus"></i>
+
+                </label>
+                <label class="form-img-container" for="product-image">
+                    <img src="{{product.product_image.url}}" id="myImg" name="myImg">
+                    <span id="form-img-close"> <i class="fa-solid fa-close"></i></span>
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add Product">
+            </div>
+
+        </form>
+    </div>
+</div>
+<script>
+    document.getElementById('store-image').addEventListener('change',
+        function (event) {
+            // handle the file upload
+            const file = event.target.files[0];
+            const imgElement = document.getElementById('myImg');
+            imgElement.src = URL.createObjectURL(file);
+            console.log(imgElement.src);
+            var imgContainer = document.querySelector('.form-img-container');
+            imgContainer.style.display = "block";
+            var noImage = document.querySelector('.no-image');
+            noImage.style.display = "none";
+            var formImgClose = document.querySelector('#form-img-close');
+            formImgClose.addEventListener('click', function () {
+                imgContainer.style.display = 'none';
+                noImage.style.display = "flex";
+                imgElement.src = "";
+            })
+        });
+</script>
+<script>
+
+</script>
+
+{% endblock %}

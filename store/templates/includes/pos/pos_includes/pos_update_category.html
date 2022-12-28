@@ -1,0 +1,82 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %}Dashboard | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/pos_categories.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+
+
+<div class="add-store-container">
+    <div class="add-store-header">
+        <h1><i class="fa-solid fa-plus"></i>&nbsp;Update Category</h1>
+        <div class="add-store-options">
+            <a href="{% url 'pos_categories' store_slug=store.store_slug %}">Back</a>
+        </div>
+    </div>
+    <div class="add-store-form">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="category-name">Category Name</label>
+                <input type="text" name="category-name" id="category-name" placeholder="Please input the category name">
+            </div>
+            <div class="form-group">
+                <label for="category-slug">Category Slug</label>
+                <input type="text" name="category-slug" id="category-slug" placeholder="Please input the category slug">
+            </div>
+            <div class="form-group">
+                <label for="category-code">Category Code</label>
+                <input type="text" name="category-code" id="category-code" value="{{store.generate_code}}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="category-description">Category Description</label>
+                <input type="text" name="category-description" id="category-description"
+                    placeholder="Please input the category address">
+            </div>
+            <div class="form-group">
+                <label for="category-store">Category Store</label>
+                <input type="text" name="category-store" id="category-store" value="{{store.store_name}}" readonly>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Update Category">
+            </div>
+
+        </form>
+    </div>
+</div>
+<!-- <script>
+    document.getElementById('store-image').addEventListener('change',
+        function (event) {
+            // handle the file upload
+            const file = event.target.files[0];
+            const imgElement = document.getElementById('myImg');
+            imgElement.src = URL.createObjectURL(file);
+            console.log(imgElement.src);
+            var imgContainer = document.querySelector('.form-img-container');
+            imgContainer.style.display = "block";
+            var noImage = document.querySelector('.no-image');
+            noImage.style.display = "none";
+            var formImgClose = document.querySelector('#form-img-close');
+            formImgClose.addEventListener('click', function () {
+                imgContainer.style.display = 'none';
+                noImage.style.display = "flex";
+                imgElement.src = "";
+            })
+        });
+</script> -->
+<script>
+
+</script>
+
+{% endblock %}

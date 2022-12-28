@@ -1,0 +1,23 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %} Customers | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/customer.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+<div class="pos-customer-container">
+    <h1>Coming Soon</h1>
+</div>
+
+
+
+{% endblock %}

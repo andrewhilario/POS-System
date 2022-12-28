@@ -1,0 +1,7 @@
+/.vscode
+/build
+/dist
+/env
+/pos_start.bat
+/run.py
+/run.spec

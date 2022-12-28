@@ -1,0 +1,45 @@
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+{% endblock %}
+<nav>
+    <div class="page-name">
+        <h3>
+            {% if request.path == '/' %}
+            Dashboard
+            {% elif request.path == '/add-store/' %}
+            Store List
+            {% endif %}
+        </h3>
+    </div>
+    <div class="search-bar">
+        <input type="text" placeholder="Search here">
+        <i class="fas fa-search"></i>
+    </div>
+    <div class="admin-icon">
+        <div class="notif-bell">
+            <i class="fas fa-bell" id="notifIcon"></i>
+            <span class="notif-count"> 3 </span>
+        </div>
+        <div class="admin">
+            <div class="admin-name">
+                <h4>John Doe</h4>
+                <p>Administrator</p>
+            </div>
+            <div class="admin-img">
+                <img src="{% static 'media/admin.png' %}" alt="admin">
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    var notifBell = document.querySelector('.notif-bell');
+    var notifCount = document.querySelector('.notif-count');
+    var notifCountValue = parseInt(notifCount.innerHTML);
+    var notifBellIcon = document.getElementById('notifIcon');
+    notifBell.addEventListener('click', () => {
+        notifBell.classList.toggle('active');
+        notifBellIcon.classList.toggle('activeIcon');
+    })
+</script>

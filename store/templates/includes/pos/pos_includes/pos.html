@@ -1,0 +1,216 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% load custom_tags %}
+{% block title %} Point of Sales | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/pos.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        $('select').on('change', function () {
+            var url = $(this).val();
+            if (url) {
+                window.location = url;
+            }
+            return false;
+        });
+    });
+
+    $(function () {
+        var sort = GetURLParameter("sort");
+        var filter = GetURLParameter("filter");
+
+        if (sort) $(`#${sort}`).attr('selected', 'selected')
+        if (filter) $(`#${filter}`).attr('selected', 'selected')
+    });
+
+    function GetURLParameter(sParam) {
+        var sPageURL = window.location.search.substring(1);
+        var sURLVariables = sPageURL.split('&');
+        for (var i = 0; i < sURLVariables.length; i++) {
+            var sParameterName = sURLVariables[i].split('=');
+            if (sParameterName[0] == sParam) {
+                return sParameterName[1];
+            }
+        }
+    }
+</script>
+<div class="pos-main-container">
+    <div class="pos-main-header">
+        <h1>Point of Sales</h1>
+        <div class="pos-select-category">
+            <form action="" method="GET">
+                <p>Select Category:</p>
+                <select name="pos_category" id="pos-category">
+                    <option value="" hidden class="selected">Please Select Product Category here</option>
+                    <option value="?{% query_transform filter='all' %}">All</option>
+                    {% for ctg in category %}
+
+                    <option value="?{% query_transform filter=ctg.category_name %}">
+                        {{ctg.category_name}}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+    </div>
+    <div class="pos-container">
+        <div class="pos-header">
+            <h1>Ordered Products</h1>
+        </div>
+        <div class="pos-table">
+            <table>
+                <thead>
+                    <tr class="pos-tbl-header">
+                        <th>Quantity</th>
+                        <th>Products</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="tbl-body">
+                    {% if order == True %}
+                    <tr class="pos-tbl-contents">
+                        <td colspan="5" class="pos-tbl-contents-empty">
+                            <p>There are no products ordered yet.</p>
+                        </td>
+                    </tr>
+                    {% else %}
+                    {% for order in order_items %}
+
+                    <tr class="pos-tbl-contents">
+
+                        <td>{{order.order_item_quantity}}</td>
+                        <td>{{order.order_item_product}}</td>
+                        <td>{{order.order_item_price}}&nbsp;Php</td>
+                        <td>{{order.order_item_total}}&nbsp;Php</td>
+                        <td class="pos-tbl-btns">
+                            <a href="{% url 'update_order' store_slug=store.store_slug pk=order.id %}"
+                                class="pos-tbl-update"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
+                            <a href="{% url 'delete_order' store_slug=store.store_slug pk=order.id %}"
+                                class="pos-tbl-delete"><i class="fa-solid fa-trash"></i>Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="show-receipt">
+        <div class="show-receipt-btn">
+            <i class="fa-solid fa-receipt"></i>
+            <a href="{% url 'pos_orders' store_slug=store.store_slug %}" class="show-receipt-btn-link">Show Receipt</a>
+        </div>
+    </div>
+    <div class="pos-all-products">
+        <div class="pos-all-products-header">
+            {% if filter %}
+            <h1>{{filter}}</h1>
+            {% else %}
+            <h1>All Products</h1>
+            {% endif %}
+            <div class="sort-all-products">
+                <p>Sort by:</p>
+                <select name="sort-all-products" id="sort-all-products">
+                    <option value="none" selected disabled hidden>Price</option>
+                    <option value="?{% query_transform sort='new' %}">New</option>
+                    <option value="?{% query_transform sort='old' %}">Old</option>
+                    <option id="price_desc" value="?{% query_transform sort='price_desc' %}">Price: High to Low
+                    </option>
+                    <option id="price_asc" value="?{% query_transform sort='price_asc' %}">Price: Low to High
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="all-products-container">
+            {% for prod in products %}
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{prod.product_image.url}}" alt="" srcset="">
+                    <div class="add-btn">
+                        <a href="{% url 'add_order' store_slug=store.store_slug pk=prod.id %}" class="add_product_url">
+                            <i class="fa-solid fa-plus"></i><span>Add</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="product-details">
+                    <h4>{{prod.product_name}}</h4>
+                    <p>{{prod.product_price}} Php</p>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+    <div class="pos-add-order-modal">
+        <div class="order-modal">
+            <div class="order-modal-header">
+                <h1>Add Order</h1>
+                <div class="close-modal">
+                    <i class="fa-solid fa-times"></i>
+                </div>
+            </div>
+            <form action="" class="order-modal-form" method="post">
+                {% csrf_token %}
+                <label for="order-modal-qty">Quantity</label>
+                <input type="number" name="order-modal-qty" id="order-modal-qty" placeholder="Enter Quantity">
+                <input type="submit" value="Add Order">
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    $(function () {
+        $('.add-btn').on('click', function () {
+            $('.pos-add-order-modal').css('display', 'flex');
+        });
+        $('.close-modal').on('click', function () {
+            $('.pos-add-order-modal').css('display', 'none');
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $('.add_product_url').on('click', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            $('.order-modal-form').attr('action', url);
+        })
+    })
+</script>
+<script>
+    $(document).ready(function () {
+        $('.pos-tbl-update').on('click', function () {
+            $('.pos-edit-order-modal').css('display', 'flex');
+        });
+        $('.edit-close-modal').on('click', function () {
+            $('.pos-edit-order-modal').css('display', 'none');
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $('.message-alert').delay(2000).fadeOut(1000);
+    })
+</script>
+
+
+
+{% endblock %}

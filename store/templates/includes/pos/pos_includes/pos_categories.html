@@ -1,0 +1,53 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %}Categories | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/pos_categories.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+<div class="pos-category-container">
+    <div class="pos-category-header">
+        <h1>Categories</h1>
+        <div class="pos-add-ctg">
+
+            <a href="{% url 'add_category' store_slug=store.store_slug %}">Add Category</a>
+        </div>
+    </div>
+    <div class="pos-category-table">
+        <table>
+
+            <tr class="pos-ctg-tbl-header">
+                <th>Category Code</th>
+                <th>Category Name</th>
+                <th>Created Date</th>
+                <th>Actions</th>
+            </tr>
+            {% for ctg in category %}
+            <tr class="pos-ctg-tbl-contents">
+                <td>{{ctg.category_code}}</td>
+                <td>{{ctg.category_name}}</td>
+                <td>{{ctg.category_created | date:"M d, Y"}}</td>
+                <td class="pos-ctg-tbl-btns">
+                    <a href="{% url 'update_category' store_slug=store.store_slug pk=ctg.id %}"
+                        class="pos-ctg-tbl-update"><i class="fa-solid fa-pen-to-square"></i>Update</a>
+                    <a href="{% url 'delete_category' store_slug=store.store_slug pk=ctg.id %}"
+                        class="pos-ctg-tbl-delete"><i class="fa-solid fa-trash"></i>Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %}

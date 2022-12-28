@@ -1,0 +1,482 @@
+.dashboard-content {
+    width: 100%;
+    height: 90%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 35px;
+}
+
+.container-graph-main {
+    width: 100%;
+    height: 60%;
+    display: flex;
+    /* background-color: gray; */
+}
+
+.section-graph-main {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* background-color: rgb(87, 87, 87); */
+
+}
+
+.top-graph {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: rgb(61, 56, 56); */
+}
+
+.bottom-graph {
+    width: 95%;
+    height: 55%;
+    border: 2px solid #434343;
+    margin: 0 auto;
+    border-radius: 15px;
+    /* background-color: antiquewhite; */
+}
+
+.todays-sales-graph {
+    width: 45%;
+    height: 80%;
+    background-color: white;
+    border: 2px solid #434343;
+    border-radius: 15px;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.graph-details {
+    width: 100%;
+    padding-left: 35px;
+}
+
+.graph-details h1 {
+    font-size: 3rem;
+    color: #434343;
+    font-weight: bold;
+}
+
+.graph-details p {
+    font-size: .9rem;
+    color: #434343;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.graph-details span {
+    font-size: .7rem;
+    color: #434343;
+    font-weight: 400;
+}
+
+.chart-js {
+    padding-right: 25px;
+    position: relative;
+}
+
+.chart-js h2 {
+    font-size: 1.7rem;
+    position: absolute;
+    top: 50%;
+    left: 46%;
+    transform: translate(-55%, -35%);
+}
+
+.bar-graph-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.left-part {
+    margin: 20px 0px 0px 5px;
+}
+
+.left-part p {
+    font-size: .9rem;
+    font-weight: 600;
+    color: #434343;
+}
+
+.left-part h1 {
+    color: #434343;
+}
+
+.right-part {
+    display: flex;
+    align-items: center;
+    font-size: .8rem;
+}
+
+.section {
+    padding: 10px 15px;
+    background-color: #E9E9E9;
+    margin: 0 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.bar-graph {
+    width: 100%;
+    height: 210px;
+}
+
+.bar-graph canvas {
+    width: 100%;
+    height: 100%;
+    margin: 15px 20px;
+}
+
+#myChart {
+    width: 100%;
+    height: 100%;
+}
+
+.todays-revenue-graph {
+    width: 45%;
+    height: 80%;
+    background-color: white;
+    border: 2px solid #434343;
+    border-radius: 15px;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.side-section-graph {
+    width: 30%;
+    height: 100%;
+    /* background-color: rgb(43, 43, 43); */
+}
+
+.side-graph {
+    width: 96%;
+    height: 91%;
+    border-radius: 15px;
+    border: 2px solid #434343;
+    margin: 22px 15px;
+}
+
+.side-graph-header {
+    width: 100%;
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+}
+
+.side-graph-header p {
+    font-weight: 500;
+}
+
+.side-graph-options {
+    cursor: pointer;
+    border-radius: 10px;
+    border: 2px solid #434343;
+    text-align: center;
+    width: 70px;
+    height: 35px;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0 7px;
+    align-items: center;
+    transition: all .1s ease-in-out;
+}
+
+.side-graph-options i {
+    font-size: .7rem;
+}
+
+.side-graph-options:hover {
+    background-color: #474973;
+    border: 2px solid #474973;
+    color: white;
+    transition: all .1s ease-in-out;
+}
+
+.side-graph-main {
+    display: block;
+    width: 100%;
+    position: relative;
+}
+
+.side-graph-main canvas {
+    margin: 0 auto;
+}
+
+.side-graph-main .middle {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.side-graph-main .middle h1 {
+    font-size: 2.5rem;
+    color: #434343;
+}
+
+.side-graph-main .middle p {
+    font-size: .9rem;
+    font-weight: 500;
+    color: #434343;
+}
+
+.side-graph-top-item-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: start;
+    padding: 0 25px;
+    margin-top: 5%;
+}
+
+.list {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    margin-top: 5%;
+}
+
+.color {
+    width: 25px;
+    height: 25px;
+    margin-right: 30px;
+}
+
+.c1 {
+    background-color: #2551C2;
+}
+
+.c2 {
+    background-color: #36A034;
+}
+
+
+.c3 {
+    background-color: #9648B1;
+}
+
+.c4 {
+    background-color: #D07431;
+}
+
+
+
+.item-name {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+
+
+.container-bottom {
+    width: 100%;
+    height: 45%;
+    display: flex;
+    /* background-color: rgb(20, 20, 20); */
+
+}
+
+.pos-container-bottom {
+    width: 100%;
+    height: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 24px;
+    /* background-color: rgb(20, 20, 20); */
+
+}
+
+.store-table {
+    width: 70%;
+    height: 100%;
+    /* background-color: rgb(189, 189, 189); */
+}
+
+.pos-store-table {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    /* background-color: rgb(189, 189, 189); */
+}
+
+.pos-table {
+    width: 98.1%;
+    height: 100%;
+    border-radius: 15px;
+    border: 2px solid #434343;
+    margin: 0 auto;
+}
+
+.table {
+    width: 95%;
+    height: 100%;
+    border-radius: 15px;
+    border: 2px solid #434343;
+    margin: 0 auto;
+}
+
+.table-header {
+    width: 100%;
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+    margin-top: 15px;
+}
+
+.table-header p {
+    font-weight: 500;
+    font-size: 1.2rem
+}
+
+.right-side-header {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.right-side-header p {
+    font-weight: 400;
+    font-size: .8rem;
+}
+
+.right-side-header-section {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #474973;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.right-side-header-section p {
+    text-align: center;
+}
+
+.tbl-main {
+    width: 100%;
+    border: none;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tbl-header {
+    width: 100%;
+    height: 50px;
+    /* height: 10%; */
+    background-color: #E9E9E9;
+}
+
+.tbl-header th {
+    font-weight: 500;
+}
+
+.tbl-datas {
+    width: 100%;
+    height: 55px;
+    /* height: 90%; */
+    background-color: white;
+    text-align: center;
+}
+
+.tbl-data {
+    width: 100%;
+    height: 55px;
+    /* height: 90%; */
+    background-color: #E9E9E9;
+    text-align: center;
+}
+
+.tbl-datas td {
+    font-weight: 400;
+}
+
+.tbl-btn {
+    width: 80px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+    background-color: #31B970;
+    color: white;
+    cursor: pointer;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    transition: all .1s ease-in-out;
+}
+
+.tbl-btn:hover {
+    background-color: #2E9C5F;
+    transition: all .1s ease-in-out;
+}
+
+.tbl-btn i {
+    margin-right: 5px;
+}
+
+
+
+.activities {
+    width: 30%;
+    height: 100%;
+    /* background-color: rgb(116, 116, 116); */
+}
+
+.announcements {
+    width: 95%;
+    height: 100%;
+    /* background-color: rgb(189, 189, 189); */
+    border: 2px solid #434343;
+    border-radius: 15px;
+    margin-left: 4%;
+}
+
+.announce-header {
+    width: 100%;
+    height: 15%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+    margin-top: 5px;
+
+}
+
+.announce-header h3 {
+    font-weight: 500;
+}

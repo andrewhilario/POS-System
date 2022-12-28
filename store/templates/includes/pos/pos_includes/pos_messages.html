@@ -1,0 +1,23 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %} Messages | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/messages.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+
+<div class="pos-messages-container">
+    <h1>Coming Soon</h1>
+</div>
+
+
+{% endblock %}

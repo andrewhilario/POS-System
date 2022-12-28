@@ -1,0 +1,341 @@
+.store-container {
+    width: 100%;
+}
+
+.stores-header {
+    width: 95%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+    margin: 20px auto;
+}
+
+.stores-header h3 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #434343;
+}
+
+.store-btn {
+    width: 150px;
+    height: 50px;
+    background-color: #474973;
+    border-radius: 15px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.store-btn:hover {
+    background-color: #6868b6;
+}
+
+.store-btn a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.stores-list {
+    width: 95%;
+    margin: 0 auto;
+    padding: 0px 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 30px;
+}
+
+.store-section {
+    width: 100%;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #474973;
+    margin: 20px 0px;
+    color: #ffffff;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all .5s ease-in;
+}
+
+.store-section:hover {
+    background-color: #6c6cac;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.store-section:hover img {
+    transform: scale(1.1);
+    filter: brightness(1);
+    transform-origin: 50% 50%;
+}
+
+.store-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px 15px 0px 0px;
+    margin: 0;
+}
+
+
+.edit-store {
+    position: absolute;
+    top: 18.5px;
+    right: 15px;
+    z-index: 1;
+    cursor: pointer;
+    transition: all .2s ease-in;
+}
+
+.edit-store div {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: .5rem;
+}
+
+.edit-url {
+    opacity: 0;
+    position: absolute;
+    top: 18.5px;
+    right: 0;
+    width: 100px;
+    height: 35px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    text-decoration: none;
+    color: #474973;
+}
+
+.edit-url-active {
+    opacity: 1;
+    transition: all .2s ease-in;
+}
+
+.store-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px 15px 0px 0px;
+    object-fit: cover;
+    filter: brightness(0.8);
+    transition: all .4s ease;
+    margin: 0;
+}
+
+.store-img input[type='submit'] {
+    opacity: 0;
+    position: absolute;
+    top: 25px;
+    right: 5px;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    color: #ffffff;
+    z-index: 1;
+    cursor: pointer;
+    transition: all .3s ease-out;
+    background-color: transparent;
+    border: none;
+}
+
+.store-info {
+    margin: 20px auto;
+    text-align: center;
+}
+
+.store-info h4 {
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+
+.store-info p {
+    font-size: 0.8rem;
+    font-weight: 300;
+}
+
+/* ========================================================= */
+/* ========================================================= */
+/* ================*/
+/* Add Store Page */
+/*================= */
+/* ========================================================= */
+/* ========================================================= */
+.add-store-container {
+    width: 90%;
+    margin: 45px auto;
+    padding: 0px 20px;
+    border-radius: 20px;
+    border: 2px solid #434343;
+}
+
+.add-store-header {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+    margin: 10px auto;
+}
+
+.add-store-header h1 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #434343;
+}
+
+.add-store-options {
+    /* padding: 20px 30px; */
+    width: 100px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #474973;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.add-store-options:hover {
+    background-color: #6868b6;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.add-store-options a {
+    text-decoration: none;
+    color: white;
+}
+
+.add-store-form {
+    width: 95%;
+    margin: 0 auto;
+}
+
+.add-store-form form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 20px 0px;
+}
+
+.form-group label {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #434343;
+    margin-bottom: 10px;
+}
+
+.form-group .name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #434343;
+    margin-bottom: 10px;
+}
+
+.form-group input {
+    width: 100%;
+    height: 40px;
+    border: 2px solid #434343;
+    border-radius: 10px;
+    padding: 0px 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #434343;
+}
+
+.form-group input[type="file"] {
+    display: none;
+}
+
+.form-img-container {
+    display: none;
+    width: 100%;
+    height: 300px;
+    position: relative;
+}
+
+.form-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.form-img-container span {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.3s ease-in-out;
+}
+
+.form-img-container span:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    color: white;
+    background-color: #6868b6;
+}
+
+.no-image {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #434343;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.no-image i {
+    font-size: 2rem;
+    color: #434343;
+}
+
+.form-group input[type='submit'] {
+    border: none;
+    background-color: #31B970;
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 100%;
+    height: 70px;
+    cursor: pointer;
+    margin: 0 auto;
+    transition: all 0.3s ease-in-out;
+}
+
+.form-group input[type='submit']:hover {
+    background-color: #22804c;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

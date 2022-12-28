@@ -1,0 +1,70 @@
+{% load static %}
+
+<aside class="pos-sidebar">
+    <a href="#" class="logo">
+        <div class="logo-img">
+            <img src="{% static 'media/favicon.png' %}" alt="logo">
+        </div>
+        <h2>POINT OF SALES</h2>
+    </a>
+    <div class="pos-sidebar-links">
+        <div class="top-sidebar">
+            <a href="{% url 'pos_dashboard' store_slug=store.store_slug %}">
+                <div class="sidebar-link">
+                    <i class="fa-solid fa-objects-column"></i>
+                    <h4>Dashboard</h4>
+                </div>
+            </a>
+            <a href="{% url 'pos_categories' store_slug=store.store_slug %}">
+                <div class="sidebar-link">
+                    <i class="fa-solid fa-list"></i>
+                    <h4>Categories</h4>
+                </div>
+            </a>
+            <a href="{% url 'pos' store_slug=store.store_slug %}">
+                <div class="sidebar-link">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h4>Point of Sales</h4>
+                </div>
+            </a>
+            <a href="{% url 'pos_sales' store_slug=store.store_slug %}">
+                <div class="sidebar-link">
+                    <i class="fa-solid fa-coins"></i>
+                    <h4>Sales</h4>
+                </div>
+            </a>
+            <a href="{% url 'pos_products' store_slug=store.store_slug %}">
+                <div class="sidebar-link">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <h4>Products</h4>
+                </div>
+            </a>
+            <a href="{% url 'pos_customers' store_slug=store.store_slug %}">
+                <div class="sidebar-link">
+                    <i class="fa-solid fa-user-group"></i>
+                    <h4>Customers</h4>
+                </div>
+            </a>
+            <a href="{% url 'pos_messages' store_slug=store.store_slug %}">
+                <div class="sidebar-link">
+                    <i class="fa-solid fa-messages"></i>
+                    <h4>Messages</h4>
+                </div>
+            </a>
+        </div>
+        <div class="bottom-sidebar">
+            <a href="#">
+                <div class="sidebar-link">
+                    <i class="fa-solid fa-gear"></i>
+                    <h4>Settings</h4>
+                </div>
+            </a>
+            <a href="#">
+                <div class="sidebar-link">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <h4>Logout</h4>
+                </div>
+            </a>
+        </div>
+    </div>
+</aside>

@@ -1,0 +1,118 @@
+nav {
+    background-color: rgb(255, 255, 255);
+    width: 100%;
+    height: 115px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: solid 1px #000;
+}
+
+.page-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #434343;
+    margin-left: 35px;
+}
+
+.search-bar {
+    width: 40%;
+
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin-right: 35px;
+    position: relative;
+}
+
+.search-bar input[type='text'] {
+    height: 50px;
+    background-color: #ECECEC;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    padding-left: 45px;
+    font-size: 1rem;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 35px;
+    color: #434343;
+    font-size: 20px;
+}
+
+.admin-icon {
+    width: 25%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notif-bell {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #d9d9d9;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.active {
+    background-color: #474973;
+    border: none;
+}
+
+.activeIcon {
+    color: white !important;
+}
+
+.notif-bell i {
+    font-size: 2rem;
+    color: #666666;
+}
+
+.notif-count {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    background-color: #ff0000;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.admin {
+    display: flex;
+    width: 45%;
+    margin-right: 35px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #434343;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.admin-name p {
+    font-size: .8rem;
+    font-weight: 400;
+    text-align: center;
+}
+
+.admin-name h4 {
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: 600;
+}

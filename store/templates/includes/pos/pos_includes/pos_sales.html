@@ -1,0 +1,48 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %} Sales | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/sales.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+<div class="pos-sales-container">
+    <div class="pos-sales-header">
+        <h1>Sales Transactions</h1>
+    </div>
+    <div class="pos-sales-table">
+        <table>
+            <tr class="sales-tbl-header">
+                <th>Transaction #</th>
+                <th>Transaction Code</th>
+                <th>Transaction Date</th>
+                <th>Total</th>
+                <th>Tax Inclusive</th>
+                <th>Actions</th>
+            </tr>
+            <tr class="sales-tbl-content">
+                <td>001</td>
+                <td>CODE000991</td>
+                <td>2022-12-09</td>
+                <td>1540.00 Php</td>
+                <td>(12.0%)24.00 Php</td>
+                <td class="sales-tbl-btns">
+                    <a href="#" class="sales-tbl-receipt"><i class="fa-solid fa-receipt"></i></a>
+                    <a href="#" class="sales-tbl-delete"><i class="fa-solid fa-trash"></i></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %}

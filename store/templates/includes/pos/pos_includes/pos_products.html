@@ -1,0 +1,53 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %} Products | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/product.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+<div class="pos-products-container">
+    <div class="pos-products-header">
+        <h1>Products</h1>
+        <div class="add-products-btn">
+            <a href="{% url 'add_product' store_slug=store.store_slug %}">Add New Product</a>
+        </div>
+    </div>
+    <div class="pos-products-table">
+        <table>
+            <tr class="products-tbl-header">
+                <th>Product ID</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Created Date</th>
+                <th>Actions</th>
+            </tr>
+            {% for product in products %}
+            <tr class="products-tbl-content">
+                <td>#{{product.id}}</td>
+                <td>{{product.product_name}}</td>
+                <td>{{product.product_price}} Php</td>
+                <td>{{product.product_created | date:"M d, Y"}}</td>
+                <td class="products-tbl-btns">
+                    <a href="{% url 'update_product' store_slug=store.store_slug pk=product.id %}"
+                        class="products-tbl-edit"><i class="fa-solid fa-edit"></i>Edit</a>
+                    <a href="{% url 'delete_product' store_slug=store.store_slug pk=product.id %}"
+                        class="products-tbl-delete"><i class="fa-solid fa-trash"></i>Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %} Receipt | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/pos_orders.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+<div class="pos-orders-container">
+    <div class="pos-orders-header">
+        <h1>Orders</h1>
+        <div class="back-btn">
+            <a href="{% url 'pos' store_slug=store.store_slug %}">Back</a>
+        </div>
+    </div>
+    <div class="receipt-body">
+        <div class="receipt-header">
+            <div class="receipt-header-left">
+                <h3>POS Receipt</h3>
+            </div>
+            <div class="receipt-header-right">
+                <h3>Order ID: </h3>
+                <h3>Order Date: </h3>
+            </div>
+        </div>
+        <div class="receipt-body-section">
+            <div class="r-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order_items %}
+                        <tr>
+                            <td>
+                                {{ item.order_item_product }}
+                            </td>
+                            <td>
+                                {{ item.order_item_quantity }}
+                            </td>
+                            <td>
+                                {{ item.order_item_price }} Php
+                            </td>
+                            <td>
+                                {{ item.order_item_total }} Php
+                            </td>
+                        </tr>
+                        {% endfor %}
+                </table>
+            </div>
+            <div class="r-total">
+                <div class="r-total_total">
+                    <h3>Total:</h3>
+                    <span>{{order_total}} Php</span>
+                </div>
+                <div class="r-total_tax">
+                    <h3>Tax (12%):</h3>
+                    <span id="r-tax"></span>
+                </div>
+                <div class="r-total_grandtotal">
+                    <h3>Grand Total:</h3>
+                    <span id="r-grand-total"></span>
+                </div>
+            </div>
+            <div class="r-btns">
+                <div class="r-main-btn">
+                    <div class="r-btn-print">
+                        <a href="{% url 'pos_getOrders' store_slug=store.store_slug %}">Print</a>
+                    </div>
+                    <div class="r-btn-back">
+                        <a href="{% url 'pos' store_slug=store.store_slug %}">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var order_total = "{{order_total}}"
+        var tax = 0.12 * order_total
+
+        $("#r-tax").text(tax.toFixed(2) + " Php")
+
+        var grand_total = parseFloat(order_total) + parseFloat(tax)
+
+        $("#r-grand-total").text("" + grand_total.toFixed(2) + " Php")
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $(".r-btn-print").click(function () {
+            var printContents = document.querySelector(".receipt-body").innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+        });
+    });
+</script>
+
+{% endblock %}
