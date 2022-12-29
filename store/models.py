@@ -51,8 +51,8 @@ class Product(models.Model):
 class Order(models.Model):
     order_id = models.CharField(max_length=100)
     order_date = models.DateTimeField(blank=True,null=True)
-    order_products = models.ManyToManyField(Product)
-    order_total = models.DecimalField(max_digits=10, decimal_places=2)
+    order_products = models.ManyToManyField(Product, related_name='order_products', blank=True)
+    order_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     order_store = models.ForeignKey(Store, on_delete=models.CASCADE)
     order_completed = models.BooleanField(default=False)
     order_created = models.DateTimeField(blank=True,null=True)
@@ -75,16 +75,16 @@ class OrderItem(models.Model):
         return self.order_item_product.product_name
 
 
-# class Transaction(models.Model):
-#     transaction_number = models.CharField(max_length=100)
-#     transaction_code = models.CharField(max_length=100)
-#     transaction_date = models.DateTimeField(blank=True,null=True)
-#     transaction_total = models.CharField(max_length=100)
-#     transaction_order = models.ForeignKey(Order, on_delete=models.CASCADE)
-#     transaction_tax = models.CharField(max_length=100)
-#     transaction_created = models.DateTimeField(blank=True,null=True)
+class Transaction(models.Model):
+    transaction_number = models.CharField(max_length=100)
+    transaction_code = models.CharField(max_length=100)
+    transaction_date = models.DateTimeField(blank=True,null=True)
+    transaction_total = models.CharField(max_length=100)
+    transaction_order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    transaction_tax = models.CharField(max_length=100)
+    transaction_created = models.DateTimeField(blank=True,null=True)
 
-#     def __str__(self):
-#         return self.transaction_id
+    def __str__(self):
+        return self.transaction_id
 
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Store, Category, Product, Order, OrderItem
+from .models import Store, Category, Product, Order, OrderItem, Transaction
 # Register your models here.
 
 class ProductAdmin(admin.ModelAdmin):
@@ -20,12 +20,20 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('category_name', 'category_store')
     list_per_page = 10
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
+
+
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('order_id', 'order_date', 'order_total', 'order_store')
     list_filter = ('order_id', 'order_date', 'order_total', 'order_store')
     search_fields = ('order_id', 'order_date', 'order_total', 'order_store')
     list_per_page = 10
+    inlines = [OrderItemInline]
+
+
 
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('order_item_id', 'order_item_product', 'order_item_quantity', 'order_item_price')
@@ -34,9 +42,17 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_per_page = 10
 
 
+
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = ('transaction_number', 'transaction_code', 'transaction_date', 'transaction_total')
+    list_filter = ('transaction_number', 'transaction_code', 'transaction_date', 'transaction_total')
+    search_fields = ('transaction_number', 'transaction_code', 'transaction_date', 'transaction_total')
+    list_per_page = 10
+
 admin.site.register(Store, StoreAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product , ProductAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
+admin.site.register(Transaction, TransactionAdmin)
 

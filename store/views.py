@@ -219,6 +219,16 @@ def add_order(request, store_slug, pk):
                 order_product = p
                 order_quantity = request.POST.get('order-modal-qty')
                 order_price = p.product_price
+                order_prd = p.id
+
+                
+                order_obj = Order.objects.create(
+                    order_id=truncate_uuid,
+                    order_store=store,
+                )
+                order_obj.order_products.add(order_prd)
+                order_obj.save()
+            
 
                 orderItem_obj = OrderItem.objects.create(
                     order_item_id=truncate_uuid,
@@ -226,6 +236,7 @@ def add_order(request, store_slug, pk):
                     order_item_quantity=order_quantity,
                     order_item_price=order_price,
                     order_item_total=float(order_quantity) * float(order_price),
+                    order_item_order=order_obj,
                     order_item_created=timezone.now()
                 )
                 orderItem_obj.save()
@@ -243,7 +254,6 @@ def add_order(request, store_slug, pk):
 def update_order(request, store_slug, pk):
     store = get_object_or_404(Store, store_slug=store_slug)
     order = get_object_or_404(OrderItem, pk=pk)
-
 
     if request.method == 'POST':
         order_quantity = request.POST.get('order-qty')
@@ -343,6 +353,10 @@ def pos_getOrders(request, store_slug):
 
 def pos_sales(request, store_slug):
     store = get_object_or_404(Store, store_slug=store_slug)
+    order = Order.objects.filter(order_store=store)
+
+
+
     context = {
         'store': store
     }
