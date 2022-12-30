@@ -32,7 +32,8 @@
             </div>
             <div class="form-group">
                 <label for="product-slug">Product Slug</label>
-                <input type="text" name="product-slug" id="product-slug" placeholder="Please input the product slug">
+                <input type="text" name="product-slug" id="product-slug" placeholder="Please input the product slug"
+                    readonly>
             </div>
             <div class="form-group">
                 <label for="product-description">Product Description</label>
@@ -95,7 +96,18 @@
         });
 </script>
 <script>
-
+    var str = document.getElementById('product-name').value;
+    str = str.replace(/[^a-zA-Z0-9\s]/g, "");
+    str = str.toLowerCase();
+    str = str.replace(/\s/g, '-');
+    function slugify(str) {
+        return str.replace(/[^a-zA-Z0-9\s]/g, "")
+            .toLowerCase()
+            .replace(/\s/g, '-');
+    }
+    document.getElementById('product-name').addEventListener('keyup', function () {
+        document.getElementById('product-slug').value = slugify(document.getElementById('product-name').value);
+    })
 </script>
 
 {% endblock %}

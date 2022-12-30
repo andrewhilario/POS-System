@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Dashboard | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/storelist.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+<style>
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #434343;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+        padding-right: 10px;
+    }
+
+    .form-group select option {
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+</style>
+
+<div class="add-store-container">
+
+
+    <div class="add-store-header">
+        <h1><i class="fa-solid fa-gear"></i>&nbsp;Settings</h1>
+        <div class="add-store-options">
+            <a href="{% url 'dashboard' %}">Back</a>
+        </div>
+    </div>
+    <div class="add-store-form">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if existing == "False" %}
+            <div class="form-group">
+                <label for="settings_id">Settings ID</label>
+                <input type="text" name="settings_id" id="settings_id" placeholder="Please input store name"
+                    value="{{settings_id}}">
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <label for="tax">Tax</label>
+                <input type="text" name="tax" id="tax" placeholder="Set your prefered tax here. ">
+            </div>
+            <div class="form-group">
+                <label for="currency">Currency</label>
+                <select name="currencies" id="currencies">
+                    {% for currency in currencies %}
+                    <option value="{{currency}}">{{currency}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save">
+            </div>
+
+        </form>
+    </div>
+</div>
+<!-- <script>
+    document.getElementById('store-image').addEventListener('change',
+        function (event) {
+            // handle the file upload
+            const file = event.target.files[0];
+            const imgElement = document.getElementById('myImg');
+            imgElement.src = URL.createObjectURL(file);
+            console.log(imgElement.src);
+            var imgContainer = document.querySelector('.form-img-container');
+            imgContainer.style.display = "block";
+            var noImage = document.querySelector('.no-image');
+            noImage.style.display = "none";
+            var formImgClose = document.querySelector('#form-img-close');
+            formImgClose.addEventListener('click', function () {
+                imgContainer.style.display = 'none';
+                noImage.style.display = "flex";
+                imgElement.src = "";
+            })
+        });
+</script> -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var message = $('.message-alert');
+        if (message.length > 0) {
+            setTimeout(function () {
+                message.fadeOut('slow');
+            }, 3000);
+        }
+    });
+</script>
+
+{% endblock %}

@@ -80,21 +80,20 @@
                     </tr>
                 </thead>
                 <tbody class="tbl-body">
-                    {% if order == True %}
+                    {% for order in order_items %}
+                    {% if order == "True" %}
                     <tr class="pos-tbl-contents">
                         <td colspan="5" class="pos-tbl-contents-empty">
                             <p>There are no products ordered yet.</p>
                         </td>
                     </tr>
                     {% else %}
-                    {% for order in order_items %}
-
                     <tr class="pos-tbl-contents">
 
                         <td>{{order.order_item_quantity}}</td>
                         <td>{{order.order_item_product}}</td>
-                        <td>{{order.order_item_price}}&nbsp;Php</td>
-                        <td>{{order.order_item_total}}&nbsp;Php</td>
+                        <td>{{order.order_item_price}}&nbsp;{{currency}}</td>
+                        <td>{{order.order_item_total}}&nbsp;{{currency}}</td>
                         <td class="pos-tbl-btns">
                             <a href="{% url 'update_order' store_slug=store.store_slug pk=order.id %}"
                                 class="pos-tbl-update"><i class="fa-solid fa-pen-to-square"></i>Edit</a>
@@ -102,8 +101,8 @@
                                 class="pos-tbl-delete"><i class="fa-solid fa-trash"></i>Delete</a>
                         </td>
                     </tr>
-                    {% endfor %}
                     {% endif %}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -147,7 +146,7 @@
                 </div>
                 <div class="product-details">
                     <h4>{{prod.product_name}}</h4>
-                    <p>{{prod.product_price}} Php</p>
+                    <p>{{prod.product_price}} {{currency}}</p>
                 </div>
             </div>
 

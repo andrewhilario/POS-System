@@ -76,7 +76,18 @@
         });
 </script> -->
 <script>
-
+    var str = document.getElementById('category-name').value;
+    str = str.replace(/[^a-zA-Z0-9\s]/g, "");
+    str = str.toLowerCase();
+    str = str.replace(/\s/g, '-');
+    function slugify(str) {
+        return str.replace(/[^a-zA-Z0-9\s]/g, "")
+            .toLowerCase()
+            .replace(/\s/g, '-');
+    }
+    document.getElementById('category-name').addEventListener('keyup', function () {
+        document.getElementById('category-slug').value = slugify(document.getElementById('category-name').value);
+    })
 </script>
 
 {% endblock %}

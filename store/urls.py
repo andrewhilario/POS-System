@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
+    path('settings/', views.settings, name='settings'),
     path('store-list/', views.store_list, name='store_list'),
     path('store-list/add/', views.add_store, name='add_store'),
     path('store-list/delete/<int:id>', views.delete_store, name='delete_store'),
@@ -23,6 +24,8 @@ urlpatterns = [
     path('<slug:store_slug>/point-of-sales/orders/getOrder/', views.pos_getOrders, name='pos_getOrders'),
     #POS Sales
     path('<slug:store_slug>/sales/', views.pos_sales, name='pos_sales'),
+    path('<slug:store_slug>/sales/receipts/<int:pk>', views.pos_getReceipt, name='pos_getReceipt'),
+    path('<slug:store_slug>/sales/receipts/delete/<int:pk>', views.pos_deleteReceipt, name='pos_deleteReceipt'),
     #POS Products
     path('<slug:store_slug>/products/', views.pos_products, name='pos_products'),
     path('<slug:store_slug>/products/add/', views.add_product, name='add_product'),
@@ -31,4 +34,5 @@ urlpatterns = [
     #Coming Soon
     path('<slug:store_slug>/customers/', views.pos_customers, name='pos_customers'),
     path('<slug:store_slug>/messages/', views.pos_messages, name='pos_messages'),
+    
 ]

@@ -28,17 +28,31 @@
                 <th>Tax Inclusive</th>
                 <th>Actions</th>
             </tr>
+
+            {% if order_completed == True %}
+            {% for tr in transactions %}
             <tr class="sales-tbl-content">
-                <td>001</td>
-                <td>CODE000991</td>
-                <td>2022-12-09</td>
-                <td>1540.00 Php</td>
-                <td>(12.0%)24.00 Php</td>
+                <td>{{tr.id}}</td>
+                <td>{{tr.transaction_code}}</td>
+                <td>{{tr.transaction_date | date:"Y-m-d" }} </td>
+                <td>{{tr.transaction_total }} {{currencies}}</td>
+                <td>(12.0%){{tr.transaction_tax | floatformat:2 }} {{currencies}}</td>
                 <td class="sales-tbl-btns">
-                    <a href="#" class="sales-tbl-receipt"><i class="fa-solid fa-receipt"></i></a>
-                    <a href="#" class="sales-tbl-delete"><i class="fa-solid fa-trash"></i></a>
+                    <a href="{% url 'pos_getReceipt' store_slug=store.store_slug pk=tr.id %}"
+                        class="sales-tbl-receipt"><i class="fa-solid fa-receipt"></i></a>
+                    <a href="{% url 'pos_deleteReceipt' store_slug=store.store_slug pk=tr.id %}"
+                        class="sales-tbl-delete"><i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
+            {% endfor %}
+            {% else %}
+            <tr class="sales-tbl-content">
+                <td colspan="6">
+                    <p>There are no sales transactions yet.</p>
+                </td>
+            </tr>
+            {% endif %}
+
         </table>
     </div>
 </div>

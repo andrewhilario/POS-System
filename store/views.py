@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Store, Category, Product, Order, OrderItem
+from .models import Store, Category, Product, Order, OrderItem, Transaction, Setting
 from django.contrib import messages
 from django.utils import timezone
 from uuid import uuid4
@@ -160,12 +160,15 @@ def pos(request, store_slug):
     ctg = Category.objects.filter(category_store=store)
     product = Product.objects.filter(product_store=store)
     order = Order.objects.filter(order_store=store)
-    order_item = OrderItem.objects.filter(order_item_product__product_store=store)
+    order_items = OrderItem.objects.filter(order_item_product__product_store=store)
+    settings = Setting.objects.all()
 
-    order = Order.objects.filter(order_store=store)
-    for o in order:
-        order_completed = o.order_completed
-        print(o.order_products.all(), 'This is all the products')
+    for setting in settings:
+        currency = setting.currency
+
+    order_item = OrderItem.objects.filter(order_item_product__product_store=store, order_item_order__order_completed=False)
+    order_completed = ""
+    print(order)
 
     sort = request.GET.get('sort', None)
     category = request.GET.get('filter', None)
@@ -195,60 +198,67 @@ def pos(request, store_slug):
         'category': category,
         'products': product,
         'order_items': order_item,
-        'order': order_completed        
+        'order': order_completed,
+        'currency': currency
     }
     return render(request, 'includes/pos/pos_includes/pos.html', context)
 
 
 def add_order(request, store_slug, pk):
     store = get_object_or_404(Store, store_slug=store_slug)
-    category = Category.objects.filter(category_store=store)
+    # category = Category.objects.filter(category_store=store)
     product = Product.objects.filter(id=pk)
-
     uuid = uuid4()
-
     truncate_uuid = str(uuid)[:6]
     print(truncate_uuid)
 
     if request.method == 'POST':
-        if(request.POST.get('order-modal-qty') == ''):
+        quantity = request.POST.get('order-modal-qty')
+        if(quantity == ''):
             messages.error(request, 'Please enter a quantity')
             return redirect('pos', store_slug=store_slug)
         else:
-            for p in product:
-                order_product = p
-                order_quantity = request.POST.get('order-modal-qty')
-                order_price = p.product_price
-                order_prd = p.id
-
-                
+            order_obj = None
+            if Order.objects.filter(order_completed=False).exists():
+                order_obj = Order.objects.get(order_completed=False)
+                print(order_obj.id)
+                print('Order Exists')
+                for prd,qty in zip(product,quantity):
+                    order_item_obj = OrderItem.objects.create(
+                        order_item_id=truncate_uuid,
+                        order_item_order=order_obj,
+                        order_item_product=prd,
+                        order_item_quantity=qty,
+                        order_item_price=prd.product_price,
+                        order_item_total=float(prd.product_price) * float(qty),
+                        order_item_created=timezone.now()
+                    )
+                    order_item_obj.save()
+            else:
+                print('Order Created')
                 order_obj = Order.objects.create(
                     order_id=truncate_uuid,
                     order_store=store,
+                    order_completed=False,
+                    order_created=timezone.now()
                 )
-                order_obj.order_products.add(order_prd)
                 order_obj.save()
-            
+                for prd,qty in zip(product,quantity):
+                    order_item_obj = OrderItem.objects.create(
+                        order_item_id=truncate_uuid,
+                        order_item_order=order_obj,
+                        order_item_product=prd,
+                        order_item_quantity=qty,
+                        order_item_price=prd.product_price,
+                        order_item_total=float(prd.product_price) * float(qty),
+                        order_item_created=timezone.now()
+                    )
+                    order_item_obj.save()
 
-                orderItem_obj = OrderItem.objects.create(
-                    order_item_id=truncate_uuid,
-                    order_item_product=order_product,
-                    order_item_quantity=order_quantity,
-                    order_item_price=order_price,
-                    order_item_total=float(order_quantity) * float(order_price),
-                    order_item_order=order_obj,
-                    order_item_created=timezone.now()
-                )
-                orderItem_obj.save()
 
-                messages.success(request, 'Order added successfully')
-                return redirect('pos', store_slug=store_slug)
+            messages.success(request, 'Order added successfully')
+            return redirect('pos', store_slug=store_slug)
 
-    context = {
-        'store': store,
-        'category': category,
-        'products': product        
-    }
     return redirect('pos', store_slug=store_slug)
 
 def update_order(request, store_slug, pk):
@@ -286,8 +296,6 @@ def update_order(request, store_slug, pk):
         messages.success(request, 'Order updated successfully')
         return redirect('pos', store_slug=store_slug)
 
-
-
     context = {
         'store': store,
         'order': order
@@ -303,64 +311,161 @@ def delete_order(request, store_slug, pk):
 
 def pos_orders(request, store_slug):
     store = get_object_or_404(Store, store_slug=store_slug)
-    order_item = OrderItem.objects.filter(order_item_product__product_store=store)
+    order_item = OrderItem.objects.filter(order_item_product__product_store=store, order_item_order__order_completed=False)
+    order = Order.objects.filter(order_store=store, order_completed=False)
+    settings = Setting.objects.all()
 
     order_total = 0
+    print(order_item)
     for o in order_item:
         order_total += o.order_item_total
+
+    for setting in settings:
+        tax = setting.tax
+        currencies = setting.currency
+        tax = float(tax) / 100
+        print(tax)
+
+    order_completed = True
+    order_date = None
+    order_id = None
+    for ord in order:
+        order_completed = ord.order_completed
+        order_date = ord.order_created
+        order_id = ord.order_id
 
     context = {
         'store': store,
         'order_items': order_item,
-        'order_total': order_total
+        'order_total': order_total,
+        'order_completed': order_completed,
+        'order_date': order_date,
+        'order_id': order_id,
+        'tax': tax,
+        'currencies': currencies
     }
     return render(request, 'includes/pos/pos_includes/pos_orders.html', context)
 
 def pos_getOrders(request, store_slug):
     store = get_object_or_404(Store, store_slug=store_slug)
-    order_item = OrderItem.objects.filter(order_item_product__product_store=store)
-    
-    uuid = uuid4()
+    order = Order.objects.filter(order_store=store, order_completed=False)
+    order_item = OrderItem.objects.filter(order_item_order__in=order, )
+    settings = Setting.objects.all()
 
-    truncate_uuid = str(uuid)[:7]
-
+    for setting in settings:
+        tax = setting.tax
+        tax = float(tax) / 100
+        print(tax)
 
 
     order_total = 0
     for o in order_item:
         order_total += o.order_item_total
 
-    products = OrderItem.objects.filter(order_item_product__product_store=store).values('order_item_product_id')
-    products = Product.objects.filter(id__in=products)
-    print(products)
+    for ord in order:
+        order_ttl = ord.order_total
+        print(order_ttl)
 
 
-    order_obj = Order.objects.create(
-        order_id=truncate_uuid,
-        order_date=timezone.now(),
+    Order.objects.filter(order_store=store, order_completed=False).update(
         order_total=order_total,
-        order_store=store,
-        order_completed=True,
-        order_created=timezone.now()
+        order_date=timezone.now(),
+        order_completed=True
     )
-    order_obj.order_products.set(products)
-    order_obj.save()
+    uuid = uuid4()
+    truncate_uuid = str(uuid)[:4]
+    truncate_uuid = truncate_uuid.upper()
+    transaction_obj = Transaction.objects.create(
+        transaction_code="CODE" + truncate_uuid,
+        transaction_date=timezone.now(),
+        transaction_total=order_total,
+        transaction_order=ord,
+        transaction_tax=float(order_total) * float(tax),
+        transaction_created=timezone.now(),
+    )
+    transaction_obj.save()
+ 
+
     messages.success(request, 'Order completed successfully')
-
     return redirect('pos', store_slug=store_slug)
-
-
 
 def pos_sales(request, store_slug):
     store = get_object_or_404(Store, store_slug=store_slug)
-    order = Order.objects.filter(order_store=store)
+    order = Order.objects.filter(order_store=store, order_completed=True)
+    settings = Setting.objects.all()
 
+    for setting in settings:
+        tax = setting.tax
+        currencies = setting.currency
+        tax = float(tax) / 100
+        print(tax)
+
+    order_completed = False
+    for ord in order:
+        order_completed = ord.order_completed
+        print(order_completed)
+
+    transaction = Transaction.objects.filter(transaction_order__order_completed=True)
 
 
     context = {
-        'store': store
+        'store': store,
+        'orders': order,
+        'order_completed': order_completed,
+        'transactions': transaction,
+        'tax': tax,
+        'currencies': currencies
     }
     return render(request, 'includes/pos/pos_includes/pos_sales.html', context)
+
+def pos_getReceipt(request, store_slug, pk):
+    store = get_object_or_404(Store, store_slug=store_slug)
+    transaction = get_object_or_404(Transaction, pk=pk)
+    order = Order.objects.filter(order_store=store, order_completed=True)
+
+    for ord in order:
+        order_id = ord.order_id
+    order_item = OrderItem.objects.filter(order_item_order=transaction.transaction_order, order_item_order__order_completed=True)
+    settings = Setting.objects.all()
+
+    print(transaction.transaction_order)
+    for setting in settings:
+        tax = setting.tax
+        currencies = setting.currency
+        tax = float(tax) / 100
+
+
+    order_completed = False
+    order_date = None
+    order_id = None
+    
+    for orderItem in order_item:
+        order_completed = orderItem.order_item_order.order_completed
+        order_date = orderItem.order_item_order.order_date
+        order_id = orderItem.order_item_order.order_id
+        order_total = orderItem.order_item_order.order_total
+
+
+    context = {
+        'store': store,
+        'transaction': transaction,
+        'order_items': order_item,
+        'order_completed': order_completed,
+        'order_date': order_date,
+        'order_id': order_id,
+        'order_total': order_total,
+        'tax': tax,
+        'currencies': currencies
+    }
+    return render(request, 'includes/pos/pos_includes/receipt.html', context)
+
+def pos_deleteReceipt(request, store_slug, pk):
+    store = get_object_or_404(Store, store_slug=store_slug)
+    transaction = get_object_or_404(Transaction, pk=pk)
+    transaction.delete()
+    messages.success(request, 'Receipt deleted successfully')
+    return redirect('pos_sales', store_slug=store_slug)
+
 
 def pos_products(request, store_slug):
     store = get_object_or_404(Store, store_slug=store_slug)
@@ -424,23 +529,23 @@ def update_product(request, store_slug, pk):
         product_category = request.POST.get('product-category')
         product_price = request.POST.get('product-price')
         product_image = request.FILES.get('product-image')
-        # product_store = request.POST.get('product-store')
+        product_store = request.POST.get('product-store')
 
         if Product.objects.filter(product_name=product_name).exists():
             messages.error(request, 'Product already exists')
             return redirect('update_product' , store_slug=store_slug)
         else:
             category = Category.objects.get(pk=product_category)
-            # Product.objects.filter(pk=pk).update(
-            #     product_name=product_name,
-            #     product_store=store,
-            #     product_slug=product_slug,
-            #     product_description=product_description,
-            #     product_category=category,
-            #     product_price=product_price,
-            #     product_image=product_image,
-            #     product_created=timezone.now()
-            # )
+            Product.objects.filter(pk=pk).update(
+                product_name=product_name,
+                product_store=store,
+                product_slug=product_slug,
+                product_description=product_description,
+                product_category=category,
+                product_price=product_price,
+                product_image=product_image,
+                product_created=timezone.now()
+            )
 
             messages.success(request, 'Product added successfully')
             return redirect('pos_products', store_slug=store_slug)
@@ -473,3 +578,48 @@ def pos_messages(request, store_slug):
         'store': store
     }
     return render(request, 'includes/pos/pos_includes/pos_messages.html', context)
+
+
+def settings(request):
+    currencies =['PHP','USD','EUR','CNY','JPY',]
+
+    setting = Setting.objects.all()
+    if setting.exists():
+        for s in setting:
+            settings_id = s.setting_id
+        existing = True
+    else:
+        settings_id = 'posv100'
+        existing = False
+
+    if request.method == 'POST':
+        settings_id = request.POST.get('settings_id')
+        tax = request.POST.get('tax')
+        currencies = request.POST.get('currencies')
+
+        if tax == '':
+            tax = 0
+        if Setting.objects.filter(setting_id=settings_id).exists():
+            Setting.objects.filter(setting_id=settings_id).update(
+                tax=tax,
+                currency=currencies
+            )
+        else:
+            settings = Setting.objects.create(
+                setting_id=settings_id,
+                tax=tax,
+                currency=currencies,
+                setting_created=timezone.now()
+            )
+            settings.save()
+
+
+        messages.success(request, 'Settings updated successfully')
+        return redirect('settings')
+
+    context = {
+        'settings_id': settings_id,
+        'currencies' : currencies,
+        'existing': existing
+    }
+    return render(request, 'includes/settings.html', context)

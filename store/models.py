@@ -34,6 +34,9 @@ class Category(models.Model):
     def __str__(self):
         return self.category_name
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
 
 class Product(models.Model):
     product_name = models.CharField(max_length=100)
@@ -51,10 +54,10 @@ class Product(models.Model):
 class Order(models.Model):
     order_id = models.CharField(max_length=100)
     order_date = models.DateTimeField(blank=True,null=True)
-    order_products = models.ManyToManyField(Product, related_name='order_products', blank=True)
     order_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     order_store = models.ForeignKey(Store, on_delete=models.CASCADE)
     order_completed = models.BooleanField(default=False)
+    order_void = models.BooleanField(default=False)
     order_created = models.DateTimeField(blank=True,null=True)
 
 
@@ -64,11 +67,11 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order_item_id = models.CharField(max_length=100)
+    order_item_order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     order_item_product = models.ForeignKey(Product, on_delete=models.CASCADE)
     order_item_quantity = models.IntegerField()
     order_item_price = models.DecimalField(max_digits=10, decimal_places=2)
     order_item_total = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-    order_item_order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     order_item_created = models.DateTimeField(blank=True,null=True)
 
     def __str__(self):
@@ -76,7 +79,6 @@ class OrderItem(models.Model):
 
 
 class Transaction(models.Model):
-    transaction_number = models.CharField(max_length=100)
     transaction_code = models.CharField(max_length=100)
     transaction_date = models.DateTimeField(blank=True,null=True)
     transaction_total = models.CharField(max_length=100)
@@ -85,6 +87,25 @@ class Transaction(models.Model):
     transaction_created = models.DateTimeField(blank=True,null=True)
 
     def __str__(self):
-        return self.transaction_id
+        return self.transaction_code
+
+
+
+class Setting(models.Model):
+    CURRENCY = [
+        ('USD', 'USD'),
+        ('EUR', 'EUR'),
+        ('CNY', 'CNY'),
+        ('JPY', 'JPY'),
+        ('PHP', 'PHP'),
+    ]
+    setting_id = models.CharField(max_length=100)
+    tax = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    currency = models.CharField(max_length=100, null=True, blank=True, choices=CURRENCY)
+    setting_created = models.DateTimeField(blank=True,null=True)
+
+    def __str__(self):
+        return self.setting_id
+
 
 

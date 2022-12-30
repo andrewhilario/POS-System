@@ -1,6 +1,6 @@
 {% extends "includes/pos/base_templates/pos_base.html" %}
 {% load static %}
-{% block title %} Order | {% endblock %}
+{% block title %} Receipt | {% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/includes/pos_orders.css' %}">
 {% endblock %}
@@ -18,7 +18,7 @@
     <div class="pos-orders-header">
         <h1>Orders</h1>
         <div class="back-btn">
-            <a href="{% url 'pos' store_slug=store.store_slug %}">Back</a>
+            <a href="{% url 'pos_sales' store_slug=store.store_slug %}">Back</a>
         </div>
     </div>
     <div class="receipt-body">
@@ -44,7 +44,7 @@
                         </tr>
                     </thead>
                     {% for item in order_items %}
-                    {% if order_completed == True %}
+                    {% if order_completed == False %}
                     <tbody style="border: none !important;">
                         <tr>
                             <td colspan="5">
@@ -53,6 +53,7 @@
                         </tr>
                     </tbody>
                     {% else %}
+
                     <tbody>
                         <tr>
                             <td>
@@ -69,6 +70,7 @@
                             </td>
                         </tr>
                     </tbody>
+
                     {% endif %}
                     {% endfor %}
                 </table>
@@ -76,7 +78,7 @@
             <div class="r-total">
                 <div class="r-total_total">
                     <h3>Total:</h3>
-                    {% if order_completed == True %}
+                    {% if order_completed == False %}
                     <span>0 {{currencies}}</span>
                     {% else %}
                     <span>{{order_total}} {{currencies}}</span>
@@ -94,10 +96,10 @@
             <div class="r-btns">
                 <div class="r-main-btn">
                     <div class="r-btn-print">
-                        <a href="{% url 'pos_getOrders' store_slug=store.store_slug %}">Print</a>
+                        <a href="#">Print</a>
                     </div>
                     <div class="r-btn-back">
-                        <a href="{% url 'pos' store_slug=store.store_slug %}">Back</a>
+                        <a href="{% url 'pos_sales' store_slug=store.store_slug %}">Back</a>
                     </div>
                 </div>
             </div>
@@ -107,23 +109,24 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        var currencies = "{{currencies}}"
-        var tax = "{{tax}}"
 
         var order_completed = "{{order_completed}}"
+        console.log(order_completed)
+        var taxes = "{{tax}}"
+        var currency = "{{currencies}}"
 
-        if (order_completed == "True") {
+        if (order_completed == "False") {
             var tax = 0
             var grand_total = 0
             var order_total = 0
         } else {
             var order_total = "{{order_total}}"
-            var tax = tax * order_total
-            var grand_total = parseFloat(order_total) + parseFloat(tax)
-
+            var tax = taxes * order_total
+            var grand_total = tax + parseFloat(order_total)
+            console.log(order_total)
         }
-        $("#r-tax").text(tax.toFixed(2) + " " + currencies)
-        $("#r-grand-total").text(grand_total.toFixed(2) + " " + currencies)
+        $("#r-tax").text(tax.toFixed(2) + " " + currency)
+        $("#r-grand-total").text(grand_total.toFixed(2) + " " + currency)
 
 
     });
@@ -138,5 +141,7 @@
         });
     });
 </script>
+
+
 
 {% endblock %}
