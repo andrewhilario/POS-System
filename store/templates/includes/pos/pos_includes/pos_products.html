@@ -14,11 +14,29 @@
 </div>
 {% endif %}
 {% endfor %}
+<style>
+    .pos_inventory {
+        width: 100%;
+        background-color: gray;
+    }
+
+    .pos_inventory a {
+        text-decoration: none;
+        background-color: #474973;
+        color: white;
+        padding: 15px 50px;
+        margin-left: 40px;
+        border-radius: 10px;
+    }
+</style>
 <div class="pos-products-container">
     <div class="pos-products-header">
         <h1>Products</h1>
         <div class="add-products-btn">
             <a href="{% url 'add_product' store_slug=store.store_slug %}">Add New Product</a>
+
+            <a href="{% url 'pos_inventory' store_slug=store.store_slug %}">Check Inventory</a>
+
         </div>
     </div>
     <div class="pos-products-table">
@@ -46,7 +64,9 @@
             {% endfor %}
         </table>
     </div>
+
 </div>
+
 
 
 

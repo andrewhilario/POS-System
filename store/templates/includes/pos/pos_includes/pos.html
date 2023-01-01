@@ -80,14 +80,15 @@
                     </tr>
                 </thead>
                 <tbody class="tbl-body">
-                    {% for order in order_items %}
-                    {% if order == "True" %}
+                    {% if order_completed == True %}
                     <tr class="pos-tbl-contents">
                         <td colspan="5" class="pos-tbl-contents-empty">
                             <p>There are no products ordered yet.</p>
                         </td>
                     </tr>
                     {% else %}
+                    {% for order in order_items %}
+
                     <tr class="pos-tbl-contents">
 
                         <td>{{order.order_item_quantity}}</td>
@@ -101,8 +102,8 @@
                                 class="pos-tbl-delete"><i class="fa-solid fa-trash"></i>Delete</a>
                         </td>
                     </tr>
-                    {% endif %}
                     {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>

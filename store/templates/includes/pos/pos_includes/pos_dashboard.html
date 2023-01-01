@@ -13,37 +13,41 @@
             <div class="top-graph">
                 <div class="todays-sales-graph">
                     <div class="graph-details">
-                        <p>All Stores Today's Sales</p>
-                        <h1>₱20.4K</h1>
+                        <p>Today's Sales</p>
+                        <h1>{{total_sales|floatformat:0}}&nbsp;{{currency}}</h1>
                         <span>We have sold 123 items in all our stores</span>
                     </div>
                     <div class="chart-js">
                         <canvas id="myChart1" width="120" height="120">
                         </canvas>
-                        <h2>75%</h2>
+                        <h2 id="percentage">{{percentage_sales|floatformat:0}}%</h2>
                     </div>
                 </div>
                 <div class="todays-revenue-graph">
                     <div class="graph-details">
-                        <p>All Stores Today's Revenue</p>
-                        <h1>₱7.3K</h1>
+                        <p>Today's Revenue</p>
+                        <h1>{{total_revenue|floatformat:0}}&nbsp;{{currency}}</h1>
                         <span>Available to payout</span>
                     </div>
                     <div class="chart-js">
                         <canvas id="myChart2" width="120" height="120">
                         </canvas>
-                        <h2>58%</h2>
+                        <h2>{{percentage_revenue|floatformat:0}}%</h2>
                     </div>
                 </div>
             </div>
             <div class="bottom-graph">
                 <div class="bar-graph-header">
                     <div class="left-part">
-                        <p>All Stores Total Revenue</p>
-                        <h1>₱28.1K</h1>
+                        <p>Total Revenue this Month</p>
+                        <h1>{% for revenue in revenue_per_month %}
+                            {% if forloop.last %}
+                            {{revenue | floatformat:2}} {% endif %}
+                            {% endfor %}
+                            &nbsp;{{currency}}</h1>
                     </div>
                     <div class="right-part">
-                        <span>We have sold 123 items</span>
+                        <span>We have sold {{total_quantity}} items</span>
                         <div class="section">
                             <p>View All Stores</p>
                         </div>
@@ -67,37 +71,50 @@
                 <div class="side-graph-main">
                     <canvas id="doughnutGraph" width="211" height="211"></canvas>
                     <div class="middle">
-                        <h1>120K</h1>
+                        <h1>{{total_sales|floatformat:0}}</h1>
                         <p>Total Sales</p>
                     </div>
                 </div>
                 <div class="side-graph-top-item-list">
+                    {% for product in most_sold_product %}
+                    {% if forloop.counter == 4 %}
+                    <div class="list">
+                        <div class="color c4">
+
+                        </div>
+                        <div class="item-name">
+                            <p>{{product}}</p>
+                        </div>
+                    </div>
+                    {% elif forloop.counter == 3 %}
+                    <div class="list">
+                        <div class="color c3">
+
+                        </div>
+                        <div class="item-name">
+                            <p>{{product}}</p>
+                        </div>
+                    </div>
+                    {% elif forloop.counter == 2 %}
+                    <div class="list">
+                        <div class="color c2">
+
+                        </div>
+                        <div class="item-name">
+                            <p>{{product}}</p>
+                        </div>
+                    </div>
+                    {% elif forloop.counter == 1 %}
                     <div class="list">
                         <div class="color c1">
 
                         </div>
                         <div class="item-name">
-                            <p>Burger</p>
+                            <p>{{product}}</p>
                         </div>
                     </div>
-                    <div class="list">
-                        <div class="color c2"></div>
-                        <div class="item-name">
-                            <p>Footlong</p>
-                        </div>
-                    </div>
-                    <div class="list">
-                        <div class="color c3"></div>
-                        <div class="item-name">
-                            <p>Egg Sandwich</p>
-                        </div>
-                    </div>
-                    <div class="list">
-                        <div class="color c4"></div>
-                        <div class="item-name">
-                            <p>Barbeque</p>
-                        </div>
-                    </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -106,51 +123,35 @@
         <div class="pos-store-table">
             <div class="pos-table">
                 <div class="table-header">
-                    <p>List of Stores</p>
+                    <p>List of Orders</p>
                     <div class="right-side-header">
                         <p>Data Updates Every 24 hours</p>
-                        <a href="{% url 'store_list' %}" class="right-side-header-section">
-                            <p>View All Stores</p>
+                        <a href="{% url 'pos_sales' store_slug=store.store_slug %}" class="right-side-header-section">
+                            <p>View All Orders</p>
                         </a>
                     </div>
                 </div>
                 <table class="tbl-main">
                     <tr class="tbl-header">
-                        <th> Store</th>
-                        <th> Today Sales</th>
-                        <th> Today Revenue </th>
-                        <th> Action </th>
+                        <th> Order ID </th>
+                        <th> Order Date</th>
+                        <th> Order Status </th>
+                        <th> Total Amount </th>
+                        <th>Action</th>
                     </tr>
+                    {% for order in orders %}
                     <tr class="tbl-datas">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
+                        <td> {{order.order_id}}</td>
+                        <td> {{order.order_date | date:"Y-m-d"}}</td>
+                        {% if order.order_completed == True %}
+                        <td>Completed</td>
+                        {% else %}
+                        <td>Pending</td>
+                        {% endif %}
+                        <td>{{order.order_total}}&nbsp;{{currency}}</td>
+                        <td><button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
                     </tr>
-                    <tr class="tbl-data">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
-                    </tr>
-                    <tr class="tbl-datas">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
-                    </tr>
-                    <tr class="tbl-data">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
-                    </tr>
-                    <tr class="tbl-datas">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
-                    </tr>
+                    {% endfor %}
 
                 </table>
             </div>
@@ -171,12 +172,16 @@
 
 <script>
     var ctx = document.getElementById('myChart1').getContext('2d');
+    var total_sales = "{{total_sales}}"
+    var estimated_sales = 5000
+    var todaySales = estimated_sales - total_sales
+    console.log(todaySales)
     var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             datasets: [{
-                label: '# of Votes',
-                data: [75, 25],
+                label: 'Sales',
+                data: [total_sales, todaySales],
                 backgroundColor: [
                     'rgba(71, 73, 115, 1)',
                     'rgba(255, 255, 255, 1)',
@@ -195,12 +200,19 @@
 </script>
 <script>
     var ctx = document.getElementById('myChart2').getContext('2d');
+
+    var total_revenue = "{{total_revenue}}"
+    var estimated_revenue = 2500
+
+
+    var todayRevenue = estimated_revenue - total_revenue
+    console.log(todayRevenue)
     var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
             datasets: [{
-                label: '# of Votes',
-                data: [58, 42],
+                label: 'Revenue',
+                data: [total_revenue, todayRevenue],
                 backgroundColor: [
                     'rgba(58, 180, 121, 1)',
                     'rgba(255, 255, 255, 1)',
@@ -221,6 +233,7 @@
     Chart.defaults.font.family = 'Poppins';
     // Chart.defaults.global.legend.display = false;
     var barGraph = document.getElementById('myBarGraph')
+    var revenue_per_month = "{{revenue_per_month}}"
 
     var myBarChart = new Chart(barGraph, {
         type: 'bar',
@@ -228,7 +241,7 @@
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [{
                 label: 'Revenue',
-                data: [80000, 110000, 30000, 110000, 50000, 100000, 70000, 10000, 90000, 60000, 40000, 20000],
+                data: revenue_per_month,
                 backgroundColor: ['rgba(71, 73, 115, 1)'],
                 borderColor: ['rgba(71, 73, 115, 1)'],
                 borderRadius: 5,
@@ -257,11 +270,11 @@
                     gridLines: {
                         color: 'rgba(255, 255, 255, 1)',
                     },
-                    ticks: {
-                        callback: function (value, index, labels) {
-                            return value / 1000 + 'k';
-                        }
-                    }
+                    // ticks: {
+                    //     callback: function (value, index, labels) {
+                    //         return value / 1000 + 'k';
+                    //     }
+                    // }
                 }
             },
             responsive: true,
@@ -272,14 +285,24 @@
 </script>
 <script>
     var doughnutGraph = document.getElementById('doughnutGraph');
+    var most_sold_product = []
+    var most_sold_qty = []
 
+    {% for qty in most_sold_qty %}
+    most_sold_qty.push({{qty}})
+    {% endfor %} 
+    {% for product in most_sold_product %}
+    most_sold_product.push("{{product}}")
+    {% endfor %}
+    console.log(most_sold_product)
+    console.log(most_sold_qty)
     var myDoughnutChart = new Chart(doughnutGraph, {
         type: 'doughnut',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green',],
+            labels: most_sold_product,
             datasets: [{
-                label: '# of Votes',
-                data: [42.5, 19.5, 18, 19.5],
+                label: 'Most sold product',
+                data: most_sold_qty,
                 backgroundColor: [
                     'rgba(37, 81, 194, 1)',
                     'rgba(54, 160, 52, 1)',

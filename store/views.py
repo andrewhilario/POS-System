@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Store, Category, Product, Order, OrderItem, Transaction, Setting
+from .models import Store, Category, Product, Order, OrderItem, Transaction, Setting, Inventory
 from django.contrib import messages
 from django.utils import timezone
 from uuid import uuid4
 from django.utils.text import Truncator
+from django.db.models import Count, Sum, F
 #Imports
 
 
@@ -69,8 +70,81 @@ def edit_store(request, id):
 
 def pos_dashboard(request, store_slug):
     store = get_object_or_404(Store, store_slug=store_slug)
+    order = Order.objects.filter(order_store=store)
+    settings = Setting.objects.all()
+
+    #Settings
+    for s in settings:
+        tax = s.tax
+        tax = tax / 100
+        currency = s.currency
+
+    #Dashboard Functionality
+    total_sales = 0
+    total_revenue = 0
+    estimated_sales_per_day = 5000
+    estimated_revenue_per_day = 2500
+
+    
+    total_sales = sum([o.order_total for o in order])
+    total_revenue = sum([o.order_total for o in order]) * tax
+    # print(total_sales)
+    # print(total_revenue)
+
+
+    percentage_sales = (total_sales / estimated_sales_per_day) * 100
+    # print(percentage_sales)
+    percentage_revenue = (total_revenue / estimated_revenue_per_day) * 100
+    # print(percentage_revenue)
+
+    #Get the total quantity of products sold
+    total_quantity = 0
+    for o in order:
+        for i in o.orderitem_set.all():
+            total_quantity += i.order_item_quantity
+
+    # print(total_quantity, "qty")
+
+    #Get the quantity of a specific product sold
+    product_list = Order.objects.filter(order_store=store).values_list('orderitem__order_item_product__product_name').annotate(total=Sum('orderitem__order_item_quantity')).order_by('-total')[:4]
+
+    most_sold_product= []
+    most_sold_qty = []
+    for product in product_list:
+        most_sold_product.append(product[0])
+        most_sold_qty.append(product[1])
+    #Sales per month
+    sales_per_month = []
+    for i in range(1, 13):
+        sales_per_month.append(sum([o.order_total for o in order if o.order_created.month == i]))
+
+    #Revenue per month
+    revenue_per_month = []
+    for i in range(1, 13):
+        revenue_per_month.append(sum([o.order_total for o in order if o.order_created.month == i]) * tax)
+    
+    # print(sales_per_month)
+    # print(revenue_per_month)
+
+
+
     context = {
-        'store': store
+        'store': store,
+        'orders': order,
+        'tax': tax,
+        'currency': currency,
+        'total_sales': total_sales,
+        'total_revenue': total_revenue,
+        'estimated_sales_per_day': estimated_sales_per_day,
+        'estimated_revenue_per_day': estimated_revenue_per_day,
+        'percentage_sales': percentage_sales,
+        'percentage_revenue': percentage_revenue,
+        'revenue_per_month': revenue_per_month,
+        'sales_per_month': sales_per_month,
+        'total_quantity': total_quantity,
+        'most_sold_product': most_sold_product,
+        'most_sold_qty': most_sold_qty,
+        'products': product
     }
     return render(request, 'includes/pos/pos_includes/pos_dashboard.html', context)
 
@@ -167,8 +241,11 @@ def pos(request, store_slug):
         currency = setting.currency
 
     order_item = OrderItem.objects.filter(order_item_product__product_store=store, order_item_order__order_completed=False)
-    order_completed = ""
-    print(order)
+    order_completed = False
+
+    for ord in order:
+        order_completed = ord.order_completed
+    print(order_completed)
 
     sort = request.GET.get('sort', None)
     category = request.GET.get('filter', None)
@@ -198,7 +275,7 @@ def pos(request, store_slug):
         'category': category,
         'products': product,
         'order_items': order_item,
-        'order': order_completed,
+        'order_completed': order_completed,
         'currency': currency
     }
     return render(request, 'includes/pos/pos_includes/pos.html', context)
@@ -234,6 +311,7 @@ def add_order(request, store_slug, pk):
                         order_item_created=timezone.now()
                     )
                     order_item_obj.save()
+
             else:
                 print('Order Created')
                 order_obj = Order.objects.create(
@@ -316,9 +394,10 @@ def pos_orders(request, store_slug):
     settings = Setting.objects.all()
 
     order_total = 0
-    print(order_item)
     for o in order_item:
         order_total += o.order_item_total
+        print(o, "This is the order item")
+        
 
     for setting in settings:
         tax = setting.tax
@@ -349,7 +428,7 @@ def pos_orders(request, store_slug):
 def pos_getOrders(request, store_slug):
     store = get_object_or_404(Store, store_slug=store_slug)
     order = Order.objects.filter(order_store=store, order_completed=False)
-    order_item = OrderItem.objects.filter(order_item_order__in=order, )
+    order_item = OrderItem.objects.filter(order_item_order__in=order)
     settings = Setting.objects.all()
 
     for setting in settings:
@@ -360,8 +439,13 @@ def pos_getOrders(request, store_slug):
 
     order_total = 0
     for o in order_item:
+        print(o, "This is the order item")
         order_total += o.order_item_total
+        order_quantity = o.order_item_quantity
 
+        print(order_quantity, "This is the order quantity")
+
+    ord = None  
     for ord in order:
         order_ttl = ord.order_total
         print(order_ttl)
@@ -384,8 +468,11 @@ def pos_getOrders(request, store_slug):
         transaction_created=timezone.now(),
     )
     transaction_obj.save()
- 
-
+    for o in order_item:
+        Inventory.objects.filter(inventory_product=o.order_item_product).update(
+            inventory_stocks=F('inventory_stocks') - o.order_item_quantity
+        )
+    
     messages.success(request, 'Order completed successfully')
     return redirect('pos', store_slug=store_slug)
 
@@ -485,6 +572,7 @@ def add_product(request, store_slug):
         product_slug = request.POST.get('product-slug')
         product_description = request.POST.get('product-description')
         product_category = request.POST.get('product-category')
+        product_stocks = request.POST.get('product-stocks')
         product_price = request.POST.get('product-price')
         product_image = request.FILES.get('product-image')
         # product_store = request.POST.get('product-store')
@@ -494,6 +582,7 @@ def add_product(request, store_slug):
             return redirect('add_product' , store_slug=store_slug)
         else:
             category = Category.objects.get(pk=product_category)
+            print(request.POST, request.FILES)
             product_obj = Product.objects.create(
                 product_name=product_name,
                 product_store=store,
@@ -506,8 +595,23 @@ def add_product(request, store_slug):
             )
             product_obj.save()
 
+            uuid = uuid4()
+            truncate_uuid = str(uuid)[:5]
+            truncate_uuid = truncate_uuid.upper()
+
+            
+            inventory_obj = Inventory.objects.create(
+                inventory_id="INV" + truncate_uuid,
+                inventory_product=product_obj,
+                inventory_stocks=product_stocks,
+                inventory_created=timezone.now()
+            )
+            inventory_obj.save()
+
+
+
             messages.success(request, 'Product added successfully')
-            return redirect('pos_products', store_slug=store_slug)
+            return redirect('add_product', store_slug=store_slug)
 
 
 
@@ -563,6 +667,38 @@ def delete_product(request, store_slug, pk):
     product.delete()
     messages.success(request, 'Product deleted successfully')
     return redirect('pos_products', store_slug=store_slug)
+
+def pos_inventory(request, store_slug):
+    store = get_object_or_404(Store, store_slug=store_slug)
+    inventory = Inventory.objects.filter(inventory_product__product_store=store)
+
+
+    context = {
+        'store': store,
+        'inventories': inventory
+    }
+    return render(request, 'includes/pos/pos_includes/pos_inventory.html', context)
+
+def pos_edit_inventory(request, store_slug, pk):
+    store = get_object_or_404(Store, store_slug=store_slug)
+    inventory = get_object_or_404(Inventory, pk=pk)
+
+    if request.method == 'POST':
+        inventory_stocks = request.POST.get('product-stocks')
+        inventory_status = request.POST.get('product-status')
+        Inventory.objects.filter(pk=pk).update(
+            inventory_stocks=inventory_stocks,
+            inventory_status=inventory_status
+        )
+        messages.success(request, 'Inventory updated successfully')
+        return redirect('pos_inventory', store_slug=store_slug)
+
+    context = {
+        'store': store,
+        'inventory': inventory
+    }
+    return render(request, 'includes/pos/pos_includes/edit_inventory.html', context)
+
 
 
 def pos_customers(request, store_slug):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Store, Category, Product, Order, OrderItem, Transaction, Setting
+from .models import Store, Category, Product, Order, OrderItem, Transaction, Setting, Inventory
 # Register your models here.
 
 class ProductAdmin(admin.ModelAdmin):
@@ -50,6 +50,12 @@ class SettingsAdmin(admin.ModelAdmin):
     search_fields = ('setting_id', 'tax')
     list_per_page = 10
 
+class InventoryAdmin(admin.ModelAdmin):
+    list_display = ('inventory_id', 'inventory_product', 'inventory_stocks')
+    list_filter = ('inventory_id', 'inventory_product', 'inventory_stocks')
+    search_fields = ('inventory_id', 'inventory_product', 'inventory_stocks')
+    list_per_page = 10
+
 admin.site.register(Store, StoreAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product , ProductAdmin)
@@ -57,4 +63,5 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderItem)
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Setting, SettingsAdmin)
+admin.site.register(Inventory, InventoryAdmin)
 

@@ -1,0 +1,61 @@
+{% extends "includes/pos/base_templates/pos_base.html" %}
+{% load static %}
+{% block title %} Inventory | {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/includes/product.css' %}">
+{% endblock %}
+{% block content %}
+{% include "navbar.html" %}
+
+{% for message in messages %}
+{% if messages %}
+<div class="message-alert alert-{{ message.tags }}">
+    {{ message }}
+</div>
+{% endif %}
+{% endfor %}
+
+<div class="pos-products-container">
+    <div class="pos-products-header">
+        <h1>Inventory</h1>
+        <div class="add-products-btn">
+            <a href="{% url 'add_product' store_slug=store.store_slug %}">Add New Product</a>
+        </div>
+    </div>
+    <div class="pos-products-table">
+        <table>
+            <tr class="products-tbl-header">
+                <th>Inventory ID</th>
+                <th>Inventory Product</th>
+                <th>Inventory Stocks</th>
+                <th>Inventory Status</th>
+                <th>Created Date</th>
+                <th>Actions</th>
+            </tr>
+            {% for inv in inventories %}
+            <tr class="products-tbl-content">
+                <td>{{inv.inventory_id}}</td>
+                <td>{{inv.inventory_product.product_name}}</td>
+                <td>{{inv.inventory_stocks}}</td>
+                {% if inv.inventory_status == 'In Stock' %}
+                <td style="color:#28A745; font-weight: bold;">{{inv.inventory_status}}</td>
+                {% elif inv.inventory_status == 'Out of Stock' %}
+                <td style="color:#DC3545;">{{inv.inventory_status}}</td>
+                {% endif %}
+                <td>{{inv.inventory_created | date:"M d, Y"}}</td>
+                <td class="products-tbl-btns">
+                    <a href="{% url 'pos_edit_inventory' store_slug=store.store_slug pk=inv.id %}"
+                        class="products-tbl-edit"><i class="fa-solid fa-edit"></i>Edit</a>
+                    <a href="#" class="products-tbl-delete"><i class="fa-solid fa-trash"></i>Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+
+
+
+{% endblock %}

@@ -107,5 +107,24 @@ class Setting(models.Model):
     def __str__(self):
         return self.setting_id
 
+STOCKS = [
+    ('In Stock', 'In Stock'),
+    ('Out of Stock', 'Out of Stock'),
+]
+
+class Inventory(models.Model):
+    inventory_id = models.CharField(max_length=100)
+    inventory_product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    inventory_stocks = models.IntegerField()
+    inventory_status = models.CharField(max_length=100, null=True, blank=True, choices=STOCKS, default='In Stock')
+    inventory_created = models.DateTimeField(blank=True,null=True)
+
+    def __str__(self):
+        return self.inventory_id
+
+    class Meta:
+        verbose_name_plural = 'Inventories'
+
+
 
 

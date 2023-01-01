@@ -31,6 +31,8 @@ urlpatterns = [
     path('<slug:store_slug>/products/add/', views.add_product, name='add_product'),
     path('<slug:store_slug>/products/update/<int:pk>', views.update_product, name='update_product'),
     path('<slug:store_slug>/products/delete/<int:pk>', views.delete_product, name='delete_product'),
+    path('<slug:store_slug>/inventory/', views.pos_inventory, name='pos_inventory'),
+    path('<slug:store_slug>/inventory/edit/<int:pk>', views.pos_edit_inventory, name='pos_edit_inventory'),
     #Coming Soon
     path('<slug:store_slug>/customers/', views.pos_customers, name='pos_customers'),
     path('<slug:store_slug>/messages/', views.pos_messages, name='pos_messages'),

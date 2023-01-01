@@ -17,13 +17,15 @@
 }
 
 .add-products-btn {
+    gap: 15px;
+    display: flex;
+}
+
+.add-products-btn a {
     padding: 10px 30px;
     background-color: #474973;
     border: none;
     border-radius: 5px;
-}
-
-.add-products-btn a {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;

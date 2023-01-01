@@ -1,7 +1,7 @@
-from uuid import uuid4
+from store.models import Store, Category, Product, Order, OrderItem, Transaction, Settings, Inventory
 
-uuid = uuid4()
-truncate_uuid = str(uuid)[:4]
-truncate_uuid = truncate_uuid.upper()
+store = Store.objects.get(store_slug='mamgic-foodhub')
+order = Order.objects.filter(order_store=store, order_completed=False)
+order_item = OrderItem.objects.filter(order_item_order__in=order)
 
-print("CODE"+truncate_uuid)
+print(order_item)
