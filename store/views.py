@@ -34,6 +34,7 @@ def add_store(request):
         store_address = request.POST.get('store-address')
         store_manager = request.POST.get('store-manager')
         store_image = request.FILES.get('store-image')
+        store_slug = request.POST.get('store-slug')
 
         print(store_name, store_address, store_manager, store_image)
 
@@ -41,7 +42,8 @@ def add_store(request):
             store_name=store_name,
             store_address=store_address,
             store_manager=store_manager,
-            store_image=store_image
+            store_image=store_image,
+            store_slug=store_slug
         )
         store_obj.save()
         messages.success(request, 'Store added successfully')
@@ -84,6 +86,7 @@ def pos_dashboard(request, store_slug):
     total_revenue = 0
     estimated_sales_per_day = 5000
     estimated_revenue_per_day = 2500
+    product = None
 
     
     total_sales = sum([o.order_total for o in order])
