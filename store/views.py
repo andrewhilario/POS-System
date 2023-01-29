@@ -20,15 +20,13 @@ def dashboard(request):
     for setting in settings:
         currency = setting.currency
 
-    order_total = 0
+    ord_total = 0
     for o in order:
-        order_total += o.order_total
-        order_revenue = order_total * setting.tax / 100
-        print(o)
-    print(order_total)
-    print(order_revenue)
+        ord_total += o.order_total
+        order_revenue = ord_total * setting.tax / 100
+        print(ord_total)
 
-
+    
     order_items = 0
     for item in order_item:
         order_items += item.order_item_quantity
@@ -44,7 +42,7 @@ def dashboard(request):
         'stores': stores,
         'currency': currency,
         'store_total_sales': store_total_sales,
-        'order_total': order_total,
+        'order_total': ord_total,
         'order_revenue': order_revenue,
         'order_items': order_items,
     }

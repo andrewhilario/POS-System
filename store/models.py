@@ -69,7 +69,7 @@ class Product(models.Model):
     product_name = models.CharField(max_length=100)
     product_slug = models.SlugField(max_length=100, unique=True, null=True, blank=True)
     product_description = models.TextField(max_length=1000, blank=True)
-    product_price = models.DecimalField(max_digits=10, decimal_places=2)
+    product_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     product_image = models.ImageField(upload_to='product_images', blank=True)
     product_category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     product_store = models.ForeignKey(Store, on_delete=models.CASCADE)
@@ -97,7 +97,7 @@ class OrderItem(models.Model):
     order_item_order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True)
     order_item_product = models.ForeignKey(Product, on_delete=models.CASCADE)
     order_item_quantity = models.IntegerField()
-    order_item_price = models.DecimalField(max_digits=10, decimal_places=2)
+    order_item_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     order_item_total = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     order_item_created = models.DateTimeField(blank=True,null=True)
 
