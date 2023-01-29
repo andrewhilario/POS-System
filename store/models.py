@@ -6,6 +6,17 @@ import string
 
 # Create your models here.
 
+class User(models.Model):
+    user_name = models.CharField(max_length=100)
+    user_email = models.EmailField(max_length=100)
+    user_password = models.CharField(max_length=100)
+    user_role = models.CharField(max_length=100)
+    user_image = models.ImageField(upload_to='user_images', blank=True)
+    user_created = models.DateTimeField(blank=True,null=True)
+
+    def __str__(self):
+        return self.user_name
+
 class Store(models.Model):
     store_name = models.CharField(max_length=100)
     store_address = models.CharField(max_length=100)
@@ -22,10 +33,26 @@ class Store(models.Model):
         code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
         return code
 
+    @property
+    def get_total_sales(self):
+        total = 0
+        for order in self.order_set.all():
+            total += order.order_total
+        return total
+
+    @property
+    def get_total_revenue(self):
+        total = 0
+        grand_total = 0
+        for order in self.order_set.all():
+            total += order.order_total
+            grand_total = total * Setting.objects.all()[0].tax / 100
+        return grand_total
+
 
 class Category(models.Model):
     category_name = models.CharField(max_length=100)
-    category_slug = models.SlugField(max_length=100, unique=True, null=True, blank=True)
+    category_slug = models.SlugField(max_length=100, null=True, blank=True)
     category_code = models.CharField(max_length=6, unique=True, null=True, blank=True)
     category_description = models.TextField(max_length=1000, blank=True)
     category_store = models.ForeignKey(Store, on_delete=models.CASCADE)

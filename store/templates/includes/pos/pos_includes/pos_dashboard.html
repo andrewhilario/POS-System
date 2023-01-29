@@ -18,7 +18,7 @@
                         <span>We have sold {{total_quantity}} items in our store</span>
                     </div>
                     <div class="chart-js">
-                        <canvas id="myChart1" width="120" height="120">
+                        <canvas id="myChart" width="120" height="120">
                         </canvas>
                         <h2 id="percentage">{{percentage_sales|floatformat:0}}%</h2>
                     </div>
@@ -68,54 +68,57 @@
                         <i class="fa-regular fa-circle"></i>
                     </div>
                 </div>
-                <div class="side-graph-main">
-                    <canvas id="doughnutGraph" width="211" height="211"></canvas>
-                    <div class="middle">
-                        <h1>{{total_sales|floatformat:0}}</h1>
-                        <p>Total Sales</p>
+                <div class="side-graph-contents">
+                    <div class="side-graph-main">
+                        <canvas id="doughnutGraph" width="211" height="211"></canvas>
+                        <div class="middle">
+                            <h1>{{total_sales|floatformat:0}}</h1>
+                            <p>Total Sales</p>
+                        </div>
+                    </div>
+                    <div class="side-graph-top-item-list">
+                        {% for product in most_sold_product %}
+                        {% if forloop.counter == 4 %}
+                        <div class="list">
+                            <div class="color c4">
+
+                            </div>
+                            <div class="item-name">
+                                <p>{{product}}</p>
+                            </div>
+                        </div>
+                        {% elif forloop.counter == 3 %}
+                        <div class="list">
+                            <div class="color c3">
+
+                            </div>
+                            <div class="item-name">
+                                <p>{{product}}</p>
+                            </div>
+                        </div>
+                        {% elif forloop.counter == 2 %}
+                        <div class="list">
+                            <div class="color c2">
+
+                            </div>
+                            <div class="item-name">
+                                <p>{{product}}</p>
+                            </div>
+                        </div>
+                        {% elif forloop.counter == 1 %}
+                        <div class="list">
+                            <div class="color c1">
+
+                            </div>
+                            <div class="item-name">
+                                <p>{{product}}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
-                <div class="side-graph-top-item-list">
-                    {% for product in most_sold_product %}
-                    {% if forloop.counter == 4 %}
-                    <div class="list">
-                        <div class="color c4">
 
-                        </div>
-                        <div class="item-name">
-                            <p>{{product}}</p>
-                        </div>
-                    </div>
-                    {% elif forloop.counter == 3 %}
-                    <div class="list">
-                        <div class="color c3">
-
-                        </div>
-                        <div class="item-name">
-                            <p>{{product}}</p>
-                        </div>
-                    </div>
-                    {% elif forloop.counter == 2 %}
-                    <div class="list">
-                        <div class="color c2">
-
-                        </div>
-                        <div class="item-name">
-                            <p>{{product}}</p>
-                        </div>
-                    </div>
-                    {% elif forloop.counter == 1 %}
-                    <div class="list">
-                        <div class="color c1">
-
-                        </div>
-                        <div class="item-name">
-                            <p>{{product}}</p>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
-                </div>
             </div>
         </div>
     </div>
@@ -171,7 +174,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    var ctx = document.getElementById('myChart1').getContext('2d');
+    var ctx = document.getElementById('myChart').getContext('2d');
     var total_sales = "{{total_sales}}"
     var estimated_sales = 5000
     var todaySales = estimated_sales - total_sales
@@ -194,7 +197,7 @@
         },
         options: {
             cutout: '90%',
-            responsive: false,
+            responsive: true,
         },
     });
 </script>
@@ -225,7 +228,7 @@
         },
         options: {
             cutout: '90%',
-            responsive: false,
+            responsive: true,
         },
     });
 </script>
@@ -289,8 +292,8 @@
     var most_sold_qty = []
 
     {% for qty in most_sold_qty %}
-    most_sold_qty.push({{qty}})
-    {% endfor %} 
+    most_sold_qty.push({{ qty }})
+    {% endfor %}
     {% for product in most_sold_product %}
     most_sold_product.push("{{product}}")
     {% endfor %}
@@ -319,7 +322,7 @@
                 },
             },
             cutout: '80%',
-            responsive: false,
+            responsive: true,
         },
     });
 

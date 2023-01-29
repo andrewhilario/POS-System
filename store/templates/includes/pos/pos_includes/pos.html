@@ -211,6 +211,34 @@
     })
 </script>
 
+<script>
+    var media = window.matchMedia("(max-width: 768px)");
+    var update = document.querySelectorAll('.pos-tbl-update')
+    var del = document.querySelectorAll('.pos-tbl-delete')
+
+    if (media.matches) {
+        update.forEach(function (item) {
+            item.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>'
+        })
+        del.forEach(function (item) {
+            item.innerHTML = '<i class="fa-solid fa-trash"></i>'
+        })
+
+
+        // update.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>'
+        del.innerHTML = '<i class="fa-solid fa-trash"></i>'
+    } else {
+        update.forEach(function (item) {
+            item.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>Update'
+        })
+        del.forEach(function (item) {
+            item.innerHTML = '<i class="fa-solid fa-trash"></i>Delete'
+        })
+    }
+
+
+</script>
+
 
 
 {% endblock %}

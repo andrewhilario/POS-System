@@ -13,6 +13,7 @@
     width: 100%;
     height: 60%;
     display: flex;
+
     /* background-color: gray; */
 }
 
@@ -82,6 +83,7 @@
 .chart-js {
     padding-right: 25px;
     position: relative;
+    display: flex;
 }
 
 .chart-js h2 {
@@ -139,10 +141,10 @@
     margin: 15px 20px;
 }
 
-#myChart {
+/* #myChart {
     width: 100%;
     height: 100%;
-}
+} */
 
 .todays-revenue-graph {
     width: 45%;
@@ -165,7 +167,7 @@
 
 .side-graph {
     width: 96%;
-    height: 91%;
+    height: 80%;
     border-radius: 15px;
     border: 2px solid #434343;
     margin: 22px 15px;
@@ -213,6 +215,7 @@
     display: block;
     width: 100%;
     position: relative;
+    z-index: 10;
 }
 
 .side-graph-main canvas {
@@ -412,6 +415,7 @@
     /* height: 90%; */
     background-color: white;
     text-align: center;
+    border-radius: 0;
 }
 
 .tbl-data {
@@ -424,12 +428,14 @@
 
 .tbl-datas td {
     font-weight: 400;
+    border-radius: 0;
 }
 
 .tbl-btn {
     width: 80px;
     height: 35px;
     border: none;
+    padding: 7px 15px;
     border-radius: 5px;
     background-color: #31B970;
     color: white;
@@ -437,6 +443,7 @@
     /* display: flex;
     align-items: center;
     justify-content: center; */
+    text-decoration: none;
     transition: all .1s ease-in-out;
 }
 
@@ -448,8 +455,6 @@
 .tbl-btn i {
     margin-right: 5px;
 }
-
-
 
 .activities {
     width: 30%;
@@ -479,4 +484,222 @@
 
 .announce-header h3 {
     font-weight: 500;
+}
+
+@media only screen and (max-width: 768px) {
+    .container-graph-main {
+        flex-direction: column;
+        height: 110%;
+    }
+
+    .graph-details {
+        padding-left: 25px;
+    }
+
+    .graph-details h1 {
+        font-size: 1.5rem;
+    }
+
+    .graph-details p {
+        font-size: .7rem;
+    }
+
+    .graph-details span {
+        font-size: .5rem;
+    }
+
+    #myChart {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    #myChart2 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .chart-js {
+        padding: 0;
+
+    }
+
+    .chart-js h2 {
+        font-size: 1rem;
+        top: 55%;
+        left: 55%;
+        transform: translate(-50%, -50%);
+    }
+
+    .side-graph-header {
+        padding-top: 20px;
+    }
+
+    .section-graph-main {
+        width: 100%;
+        height: 50%;
+    }
+
+    .side-section-graph {
+        width: 100%;
+        height: 45%;
+    }
+
+    .side-graph {
+        height: 80%;
+        margin: 0 auto;
+    }
+
+    .side-graph-contents {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .side-graph-main {
+        height: 150px;
+    }
+
+    .side-graph-main canvas {
+        width: 150px;
+        height: 150px;
+    }
+
+    .side-graph-top-item-list {
+        margin-top: 0;
+
+    }
+
+    .item-name {
+        font-size: .9rem;
+    }
+
+    .side-graph-main .middle h1 {
+        font-size: 1.5rem;
+    }
+
+    /* Bottom Graph */
+    .bottom-graph {
+        height: 57%;
+    }
+
+    .left-part p {
+        font-size: .7rem;
+    }
+
+    .left-part h1 {
+        font-size: 1.5rem;
+    }
+
+    .right-part span {
+        font-size: .5rem;
+    }
+
+    .section {
+        padding: 5px 10px;
+        font-size: .5rem;
+        border-radius: 5px;
+    }
+
+    /* .bar-graph {
+        width: 90%;
+        height: 90%;
+        margin: 0 auto;
+    } */
+    .bar-graph {
+        margin: 0 auto;
+    }
+
+    #myBarGraph {
+        width: 90% !important;
+        height: 150px !important;
+        object-fit: contain !important;
+        margin: 0 auto;
+    }
+
+    /* container-bottom */
+
+    .container-bottom {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: -20%;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .store-table {
+        width: 100%;
+    }
+
+    /* table */
+    .table {
+        height: 105%;
+    }
+
+    .table-header {
+        height: 20%;
+    }
+
+    .table-header p {
+        font-size: 1rem;
+    }
+
+    .right-side-header {
+        width: 50%;
+        gap: 10px;
+    }
+
+    .right-side-header p {
+        font-size: .8rem;
+    }
+
+    .right-side-header a {
+        padding: 5px 10px;
+    }
+
+    .tbl-main {
+        font-size: .7rem;
+    }
+
+    .activities {
+        width: 100%;
+    }
+
+    .announcements {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    .announce-header {
+        width: 100%;
+        padding-top: 10px;
+    }
+
+    .announce-header h3 {
+        font-size: 1rem;
+    }
+
+    /* POS TABLE */
+    .table-header {
+        height: 15%;
+    }
+
+    .pos-table {
+        margin: 0;
+        height: 110%;
+    }
+
+    .pos-container-bottom {
+        margin: -15%;
+    }
+
+    .tbl-btn {
+        padding: 0;
+    }
 }

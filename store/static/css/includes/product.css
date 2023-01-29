@@ -457,3 +457,46 @@
     background-color: #22804c;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    .pos-products-header {
+        width: 100%;
+    }
+
+    .pos-products-header h1 {
+        font-size: 1rem;
+    }
+
+    .add-products-btn a {
+        padding: 5px 10px;
+        font-size: .8rem;
+    }
+
+    .products-tbl-header th {
+        font-size: .8rem;
+    }
+
+    .products-tbl-content td {
+        font-size: .8rem;
+    }
+
+    /* Product Edit and Delete btn */
+    .products-tbl-edit {
+        padding: 10px 15px;
+        font-size: .8rem;
+    }
+
+    .products-tbl-edit i {
+        margin: 0;
+    }
+
+    .products-tbl-delete i {
+        margin: 0;
+    }
+
+    .products-tbl-delete {
+        padding: 10px 15px;
+        font-size: .8rem;
+    }
+}

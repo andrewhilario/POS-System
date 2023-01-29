@@ -105,3 +105,25 @@
      background-color: #B53C3C;
      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
  }
+
+ @media screen and (max-width: 768px) {
+     .pos-sales-table table tbody {
+         width: 100% !important;
+     }
+
+     .sales-tbl-header {
+         width: 100%;
+     }
+
+     .sales-tbl-header th {
+         font-size: .8rem;
+     }
+
+     .sales-tbl-content {
+         width: 100%;
+     }
+
+     .sales-tbl-content td {
+         font-size: .7rem;
+     }
+ }

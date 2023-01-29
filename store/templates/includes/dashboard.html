@@ -14,19 +14,19 @@
                 <div class="todays-sales-graph">
                     <div class="graph-details">
                         <p>All Stores Today's Sales</p>
-                        <h1>₱20.4K</h1>
-                        <span>We have sold 123 items in all our stores</span>
+                        <h1>{{order_total | floatformat:0 }} {{currency}}</h1>
+                        <span>We have sold {{order_items}} items in all our stores</span>
                     </div>
                     <div class="chart-js">
-                        <canvas id="myChart1" width="120" height="120">
+                        <canvas id="myChart" width="120" height="120">
                         </canvas>
-                        <h2>75%</h2>
+                        <h2 id="percentage">75%</h2>
                     </div>
                 </div>
                 <div class="todays-revenue-graph">
                     <div class="graph-details">
                         <p>All Stores Today's Revenue</p>
-                        <h1>₱7.3K</h1>
+                        <h1>{{order_revenue | floatformat:0 }} {{currency}}</h1>
                         <span>Available to payout</span>
                     </div>
                     <div class="chart-js">
@@ -40,10 +40,10 @@
                 <div class="bar-graph-header">
                     <div class="left-part">
                         <p>All Stores Total Revenue</p>
-                        <h1>₱28.1K</h1>
+                        <h1>{{order_revenue | floatformat:2}} {{currency}}</h1>
                     </div>
                     <div class="right-part">
-                        <span>We have sold 123 items</span>
+                        <span>We have sold {{order_items}} items</span>
                         <div class="section">
                             <p>View All Stores</p>
                         </div>
@@ -64,38 +64,41 @@
                         <i class="fa-regular fa-circle"></i>
                     </div>
                 </div>
-                <div class="side-graph-main">
-                    <canvas id="doughnutGraph" width="211" height="211"></canvas>
-                    <div class="middle">
-                        <h1>120K</h1>
-                        <p>Total Sales</p>
+                <div class="side-graph-contents">
+                    <div class="side-graph-main">
+                        <canvas id="doughnutGraph" width="211" height="211"></canvas>
+                        <div class="middle">
+                            <h1>120K</h1>
+                            <p>Total Sales</p>
+                        </div>
                     </div>
-                </div>
-                <div class="side-graph-top-item-list">
-                    <div class="list">
-                        <div class="color c1">
 
+                    <div class="side-graph-top-item-list">
+                        <div class="list">
+                            <div class="color c1">
+
+                            </div>
+                            <div class="item-name">
+                                <p>Burger</p>
+                            </div>
                         </div>
-                        <div class="item-name">
-                            <p>Burger</p>
+                        <div class="list">
+                            <div class="color c2"></div>
+                            <div class="item-name">
+                                <p>Footlong</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="list">
-                        <div class="color c2"></div>
-                        <div class="item-name">
-                            <p>Footlong</p>
+                        <div class="list">
+                            <div class="color c3"></div>
+                            <div class="item-name">
+                                <p>Egg Sandwich</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="list">
-                        <div class="color c3"></div>
-                        <div class="item-name">
-                            <p>Egg Sandwich</p>
-                        </div>
-                    </div>
-                    <div class="list">
-                        <div class="color c4"></div>
-                        <div class="item-name">
-                            <p>Barbeque</p>
+                        <div class="list">
+                            <div class="color c4"></div>
+                            <div class="item-name">
+                                <p>Barbeque</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -121,36 +124,16 @@
                         <th> Today Revenue </th>
                         <th> Action </th>
                     </tr>
+                    {% for store in stores %}
+
                     <tr class="tbl-datas">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
+                        <td> {{store.store_name}} </td>
+                        <td> {{store.get_total_sales}} {{currency}}</td>
+                        <td> {{store.get_total_revenue | floatformat:2}} {{currency}}</td>
+                        <td> <a href="{% url 'pos_dashboard' store_slug=store.store_slug %}" class="tbl-btn"><i
+                                    class="fa-solid fa-eye"></i>View</a> </td>
                     </tr>
-                    <tr class="tbl-data">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
-                    </tr>
-                    <tr class="tbl-datas">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
-                    </tr>
-                    <tr class="tbl-data">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
-                    </tr>
-                    <tr class="tbl-datas">
-                        <td> Food Hub </td>
-                        <td> ₱12.4K </td>
-                        <td> ₱4.4K </td>
-                        <td> <button class="tbl-btn"><i class="fa-solid fa-eye"></i>View</button> </td>
-                    </tr>
+                    {% endfor %}
 
                 </table>
             </div>
@@ -170,7 +153,21 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    var ctx = document.getElementById('myChart1').getContext('2d');
+    var ctx = document.getElementById('myChart').getContext('2d');
+
+    var mediaQuery = window.matchMedia('(max-width: 768px)')
+    var status = false;
+    if (ctx) {
+        if (mediaQuery.matches) {
+            console.log('true')
+            var status = true;
+        } else {
+            // window width is greater than 768px
+            var status = false;
+        }
+    }
+
+
     var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -189,12 +186,13 @@
         },
         options: {
             cutout: '90%',
-            responsive: false,
+            responsive: status,
         },
     });
 </script>
 <script>
     var ctx = document.getElementById('myChart2').getContext('2d');
+
     var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -213,7 +211,7 @@
         },
         options: {
             cutout: '90%',
-            responsive: false,
+            responsive: true,
         },
     });
 </script>
@@ -221,6 +219,19 @@
     Chart.defaults.font.family = 'Poppins';
     // Chart.defaults.global.legend.display = false;
     var barGraph = document.getElementById('myBarGraph')
+    var thickness = 35
+
+    var mediaQuery = window.matchMedia('(max-width: 768px)')
+    if (thickness) {
+        if (mediaQuery.matches) {
+            var thickness = 20
+            var radius = 3
+        } else {
+            var thickness = 35
+            var radius = 5
+        }
+    }
+
 
     var myBarChart = new Chart(barGraph, {
         type: 'bar',
@@ -231,9 +242,9 @@
                 data: [80000, 110000, 30000, 110000, 50000, 100000, 70000, 10000, 90000, 60000, 40000, 20000],
                 backgroundColor: ['rgba(71, 73, 115, 1)'],
                 borderColor: ['rgba(71, 73, 115, 1)'],
-                borderRadius: 5,
+                borderRadius: radius,
                 borderWidth: 1,
-                barThickness: 35,
+                barThickness: thickness,
             }]
         },
         options: {
@@ -296,9 +307,30 @@
                 },
             },
             cutout: '80%',
-            responsive: false,
+            responsive: true,
         },
     });
+
+</script>
+
+<script>
+    var myChart1 = document.getElementById('myChart').getContext('2d');
+
+    // Get the media query
+    var mediaQuery = window.matchMedia('(max-width: 768px)')
+
+    // if (myChart1) {
+    //     if (mediaQuery.matches) {
+    //         console.log('true')
+    //         // Then trigger an alert
+    //         myChart1.style.height = '60px';
+    //         myChart1.style.width = '60px';
+    //     } else {
+    //         // window width is greater than 768px
+    //         myChart1.canvas.parentNode.style.height = '150px';
+    //         myChart1.canvas.parentNode.style.width = '150px';
+    //     }
+    // }
 
 </script>
 {% endblock %}

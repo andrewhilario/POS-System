@@ -12,7 +12,43 @@ from django.db.models import Count, Sum, F
 
 # Create your views here.
 def dashboard(request):
-    return render(request, 'includes/dashboard.html')
+    stores = Store.objects.all()
+    settings = Setting.objects.all()
+    order = Order.objects.all()
+    order_item = OrderItem.objects.all()
+
+    for setting in settings:
+        currency = setting.currency
+
+    order_total = 0
+    for o in order:
+        order_total += o.order_total
+        order_revenue = order_total * setting.tax / 100
+        print(o)
+    print(order_total)
+    print(order_revenue)
+
+
+    order_items = 0
+    for item in order_item:
+        order_items += item.order_item_quantity
+    print(order_items)
+
+
+    for store in stores:
+        store_total_sales = store.get_total_sales
+        store_total_revenue = store.get_total_revenue
+        print(store_total_revenue)
+
+    context = {
+        'stores': stores,
+        'currency': currency,
+        'store_total_sales': store_total_sales,
+        'order_total': order_total,
+        'order_revenue': order_revenue,
+        'order_items': order_items,
+    }
+    return render(request, 'includes/dashboard.html', context)
 
 def store_list (request):
     stores = Store.objects.all()
@@ -170,9 +206,9 @@ def add_category(request, store_slug):
         category_description = request.POST.get('category-description')
         # category_store = request.POST.get('category-store')
 
-        if Category.objects.filter(category_name=category_name).exists():
+        if Category.objects.filter(category_store=store, category_name=category_name).exists():
             messages.error(request, 'Category already exists')
-            return redirect('add_category' , store_slug=store_slug)
+            return redirect('pos_categories', store_slug=store_slug)
         else:
             category_obj = Category.objects.create(
                 category_name=category_name,

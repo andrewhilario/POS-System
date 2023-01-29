@@ -95,7 +95,7 @@ nav {
 
 .admin {
     display: flex;
-    width: 45%;
+    /* width: 45%; */
     margin-right: 35px;
     font-size: 1rem;
     font-weight: 600;
@@ -115,4 +115,126 @@ nav {
     font-size: 1.2rem;
     text-align: center;
     font-weight: 600;
+}
+
+.admin-img {
+    width: 75px;
+    height: 75px;
+    /* background-color: gray; */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media only screen and (max-width: 768px) {
+    nav {
+        background-color: rgb(255, 255, 255);
+        width: 100%;
+        height: 100px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom: solid 1px #000;
+    }
+
+    .page-name {
+        display: none;
+    }
+
+    .search-bar {
+        width: 40%;
+        height: 30px;
+        padding: 0 10px;
+        margin-right: 10px;
+    }
+
+    .search-bar input[type='text'] {
+        height: 30px;
+        border-radius: 15px;
+        font-size: .8rem;
+    }
+
+    .search-bar i {
+        font-size: 15px;
+    }
+
+    .admin-icon {
+        width: 35%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    .notif-bell {
+        width: 45px;
+        height: 45px;
+    }
+
+    .active {
+        background-color: #474973;
+        border: none;
+    }
+
+    .activeIcon {
+        color: white !important;
+    }
+
+    .notif-bell i {
+        font-size: 1.5rem;
+        color: #666666;
+    }
+
+    .notif-count {
+        width: 10px;
+        height: 10px;
+        font-size: 0.6rem;
+    }
+
+    .admin {
+        display: flex;
+        width: 50%;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #434343;
+        /* justify-content: space-between; */
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .admin-name {
+        padding-right: 10px;
+    }
+
+    .admin-name p {
+        font-size: .7rem;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .admin-name h4 {
+        font-size: 1rem;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .admin-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .admin-img img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+
 }

@@ -20,7 +20,7 @@
     color: #434343;
 }
 
-.pos-add-ctg {
+.pos-add-ctg a {
     background: #474973;
     color: #fff;
     padding: 10px 20px;
@@ -29,12 +29,11 @@
     font-weight: 600;
     cursor: pointer;
     transition: all .5s ease;
-}
-
-.pos-add-ctg a {
     color: #fff;
     text-decoration: none;
 }
+
+
 
 .pos-add-ctg:hover {
     background: #5e6199;
@@ -296,4 +295,44 @@
 .form-group input[type='submit']:hover {
     background-color: #22804c;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+@media only screen and (max-width: 768px) {
+    .pos-category-header h1 {
+        font-size: 1rem;
+    }
+
+    .pos-add-ctg a {
+        padding: 10px 15px;
+        font-size: .9rem;
+    }
+
+    .pos-ctg-tbl-header {
+        font-size: .6rem;
+    }
+
+    .pos-ctg-tbl-contents {
+        font-size: .6rem;
+    }
+
+    .pos-ctg-tbl-contents td {
+        width: 25%;
+    }
+
+    .pos-ctg-tbl-btns .pos-ctg-tbl-update {
+        padding: 8px 12px;
+        font-size: .8rem;
+        text-align: center;
+    }
+
+    .pos-ctg-tbl-btns .pos-ctg-tbl-delete {
+        padding: 8px 12px;
+        font-size: .8rem;
+    }
+
+    .pos-ctg-tbl-btns .pos-ctg-tbl-update i,
+    .pos-ctg-tbl-btns .pos-ctg-tbl-delete i {
+        margin: 0;
+    }
+
 }

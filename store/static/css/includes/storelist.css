@@ -18,7 +18,7 @@
     color: #434343;
 }
 
-.store-btn {
+.store-btn a {
     width: 150px;
     height: 50px;
     background-color: #474973;
@@ -33,7 +33,7 @@
     transition: all 0.3s ease-in-out;
 }
 
-.store-btn:hover {
+.store-btn a:hover {
     background-color: #6868b6;
 }
 
@@ -338,4 +338,40 @@
 .form-group input[type='submit']:hover {
     background-color: #22804c;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* Media Queries */
+@media only screen and (max-width: 768px) {
+    .stores-header h3 {
+        font-size: 1.5rem;
+    }
+
+    .store-btn a {
+        width: 100px;
+        height: 30px;
+        border-radius: 5px;
+        font-size: .8rem;
+    }
+
+    .stores-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    /* add-store-container */
+    .form-group label {
+        font-size: 1rem;
+    }
+
+    .form-group .name {
+        font-size: 1rem;
+    }
+
+    .form-group input {
+        font-size: .8rem;
+    }
+
+    .add-store-header h1 {
+        font-size: 1.5rem;
+    }
 }
