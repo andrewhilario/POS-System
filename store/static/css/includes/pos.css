@@ -434,7 +434,7 @@
     cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
+@media only screen and (orientation : landscape) {
     .pos-main-header h1 {
         font-size: 1.5rem;
     }

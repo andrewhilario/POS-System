@@ -27,13 +27,16 @@
      border-collapse: collapse;
  }
 
+
+
  .sales-tbl-header {
-     width: 95%;
+     /* width: 95%; */
      height: 50px;
      background-color: #e9e9e9;
  }
 
  .sales-tbl-header th {
+     width: 16.66666666666667%;
      font-size: 1rem;
      font-weight: 600;
      color: #434343;
@@ -106,24 +109,42 @@
      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
  }
 
- @media screen and (max-width: 768px) {
-     .pos-sales-table table tbody {
-         width: 100% !important;
+ @media only screen and (orientation : landscape) {
+     .pos-sales-container {
+         width: 90%;
+     }
+
+     .pos-sales-table {
+         width: 50%;
+     }
+
+     .pos-sales-table table {
+         width: 90% !important;
      }
 
      .sales-tbl-header {
-         width: 100%;
+         width: 100px !important;
      }
 
      .sales-tbl-header th {
-         font-size: .8rem;
+         width: 50px;
+         font-size: .7rem;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
      }
 
      .sales-tbl-content {
-         width: 100%;
+         width: 0;
+         /* width: 100%; */
      }
 
      .sales-tbl-content td {
+         width: 30%;
          font-size: .7rem;
+     }
+
+     .sales-tbl-btns {
+         width: 20%;
      }
  }

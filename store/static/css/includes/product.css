@@ -459,7 +459,7 @@
 }
 
 /* Media Queries */
-@media screen and (max-width: 768px) {
+@media only screen and (orientation : landscape) {
     .pos-products-header {
         width: 100%;
     }
