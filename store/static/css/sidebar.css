@@ -111,7 +111,7 @@ aside {
 }
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (orientation : landscape) {
     .sidebar-links {
         height: 100%;
     }
